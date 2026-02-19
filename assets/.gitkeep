@@ -1,0 +1,11 @@
+# Placeholder for assets
+# 可以在这里添加Logo、图标、Benchmark图表等静态资源文件
+
+## 推荐添加的资源
+
+- logo.svg - Cortex Memory Logo（脑图标）
+- rust-icon.svg - Rust图标
+- benchmark.png - 性能对比图表
+- favicon.ico - 网站图标
+
+目前所有图标使用Font Awesome CDN，如需自定义图标可放置在此目录。

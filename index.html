@@ -1,523 +1,1588 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cortex Memory - AI 原生的记忆管理框架</title>
-    <meta name="description" content="Cortex Memory 是一个完整的、生产就绪的 AI 记忆管理框架,让你的 AI 应用拥有智能的长期记忆能力。基于 Rust 构建,高性能、可扩展。">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <span class="logo">🧠 Cortex Memory</span>
-            </div>
-            <div class="nav-links">
-                <a href="#features" data-i18n="nav.features">核心功能</a>
-                <a href="#benchmark" data-i18n="nav.benchmark">性能基准</a>
-                <a href="#how-it-works" data-i18n="nav.how-it-works">工作原理</a>
-                <a href="#get-started" data-i18n="nav.get-started">快速开始</a>
-                <button id="lang-toggle" class="lang-toggle" onclick="toggleLanguage()">EN</button>
-                <a href="https://github.com/sopaco/cortex-mem" target="_blank" class="btn-github">
-                    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                    <span data-i18n="nav.github">GitHub</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="Cortex Memory - The AI-native memory framework built with Rust for building intelligent, context-aware agents"
+		/>
+		<meta
+			name="keywords"
+			content="AI Memory, Rust, LLM, AI Agents, Context Management, Vector Database"
+		/>
+		<title>Cortex Memory - AI-native Memory Framework built with Rust</title>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <span class="gradient-text" data-i18n="hero.title1">AI 原生的记忆框架</span><br><span data-i18n="hero.title2">让你的 AI 应用拥有智能记忆</span>
-                </h1>
-                <p class="hero-subtitle">
-                    <span data-i18n="hero.subtitle">Cortex Memory 是一个完整的、生产就绪的记忆管理框架,自动提取、组织和优化信息,让你的 AI 应用更智能、更个性化</span>
-                </p>
-                <div class="hero-cta">
-                    <a href="#get-started" class="btn btn-primary" data-i18n="hero.cta.start">快速开始</a>
-                    <a href="https://github.com/sopaco/cortex-mem" target="_blank" class="btn btn-secondary" data-i18n="hero.cta.github">
-                        查看 GitHub ⭐
-                    </a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">93.33%</div>
-                        <div class="stat-label" data-i18n="hero.stats.recall">Recall@1</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">67pp+</div>
-                        <div class="stat-label" data-i18n="hero.stats.vs">vs LangMem</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">Rust</div>
-                        <div class="stat-label" data-i18n="hero.stats.rust">高性能核心</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="favicon.png" />
 
-    <!-- Problem & Solution -->
-    <section class="comparison-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="comparison.title">为什么需要 Cortex Memory?</h2>
-            <div class="comparison-grid">
-                <div class="comparison-card before">
-                    <div class="card-header">
-                        <span class="icon">❌</span>
-                        <h3 data-i18n="comparison.before.title">没有记忆的 AI</h3>
-                    </div>
-                    <ul class="comparison-list">
-                        <li data-i18n="comparison.before.item1">每次对话后忘记用户信息</li>
-                        <li data-i18n="comparison.before.item2">缺乏个性化和上下文理解</li>
-                        <li data-i18n="comparison.before.item3">重复询问相同问题</li>
-                        <li data-i18n="comparison.before.item4">仅限于短期对话历史</li>
-                        <li data-i18n="comparison.before.item5">机械、缺乏人性化</li>
-                    </ul>
-                </div>
-                <div class="comparison-card after">
-                    <div class="card-header">
-                        <span class="icon">✅</span>
-                        <h3 data-i18n="comparison.after.title">拥有 Cortex Memory 的 AI</h3>
-                    </div>
-                    <ul class="comparison-list">
-                        <li data-i18n="comparison.after.item1">记住用户偏好和历史互动</li>
-                        <li data-i18n="comparison.after.item2">提供深度个性化体验</li>
-                        <li data-i18n="comparison.after.item3">持续学习和适应</li>
-                        <li data-i18n="comparison.after.item4">跨多次对话保持上下文</li>
-                        <li data-i18n="comparison.after.item5">建立信任感,像真正的助手</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+		<!-- Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 
-    <!-- Features Section -->
-    <section id="features" class="features-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="features.title">核心功能</h2>
-            <p class="section-subtitle" data-i18n="features.subtitle">为构建智能 AI 应用而生</p>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3 data-i18n="features.extraction.title">智能事实提取</h3>
-                    <p data-i18n="features.extraction.desc">使用 LLM 自动从非结构化文本中提取关键事实和洞察</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3 data-i18n="features.search.title">语义向量搜索</h3>
-                    <p data-i18n="features.search.desc">基于高性能向量相似度搜索,快速检索最相关的记忆</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3 data-i18n="features.optimization.title">自动记忆优化</h3>
-                    <p data-i18n="features.optimization.desc">定期审查、合并和精炼记忆,提高相关性并降低成本</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <h3 data-i18n="features.multimodal.title">多模式访问</h3>
-                    <p data-i18n="features.multimodal.desc">通过 REST API、CLI 或直接库调用与记忆系统交互</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3 data-i18n="features.integration.title">Agent 框架集成</h3>
-                    <p data-i18n="features.integration.desc">提供工具和适配器,轻松集成到流行的 AI Agent 框架</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 data-i18n="features.dashboard.title">Web 仪表板</h3>
-                    <p data-i18n="features.dashboard.desc">专用的 Web UI 用于监控、分析和可视化 Agent 的记忆</p>
-                </div>
-            </div>
-        </div>
-    </section>
+		<!-- Font Awesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+		/>
 
-    <!-- Benchmark Section -->
-    <section id="benchmark" class="benchmark-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="benchmark.title">性能基准测试</h2>
-            <p class="section-subtitle" data-i18n="benchmark.subtitle">基于 LOCOMO 数据集的严格评估</p>
-            <div class="benchmark-content">
-                <div class="benchmark-chart">
-                    <img src="https://raw.githubusercontent.com/sopaco/cortex-mem/main/assets/benchmark/cortex_mem_vs_langmem.png" 
-                         alt="Cortex Memory vs LangMem Performance Comparison" 
-                         loading="lazy">
-                </div>
-                <div class="benchmark-stats">
-                    <div class="benchmark-item">
-                        <div class="metric-name">Recall@1</div>
-                        <div class="metric-comparison">
-                            <span class="metric-cortex">93.33%</span>
-                            <span class="metric-vs">vs</span>
-                            <span class="metric-langmem">26.32%</span>
-                        </div>
-                        <div class="metric-improvement" data-i18n="benchmark.recall1">+67.02pp 提升</div>
-                    </div>
-                    <div class="benchmark-item">
-                        <div class="metric-name">MRR</div>
-                        <div class="metric-comparison">
-                            <span class="metric-cortex">93.72%</span>
-                            <span class="metric-vs">vs</span>
-                            <span class="metric-langmem">38.83%</span>
-                        </div>
-                        <div class="metric-improvement" data-i18n="benchmark.mrr">+54.90pp 提升</div>
-                    </div>
-                    <div class="benchmark-item">
-                        <div class="metric-name">NDCG@10</div>
-                        <div class="metric-comparison">
-                            <span class="metric-cortex">79.41%</span>
-                            <span class="metric-vs">vs</span>
-                            <span class="metric-langmem">16.83%</span>
-                        </div>
-                        <div class="metric-improvement" data-i18n="benchmark.ndcg">+62.58pp 提升</div>
-                    </div>
-                </div>
-            </div>
-            <div class="benchmark-note">
-                <p data-i18n="benchmark.desc">📊 基于 LOCOMO 数据集 (50 段对话, 150 个问题) 的专业评估框架测试</p>
-            </div>
-        </div>
-    </section>
+		<style>
+			/* CSS Reset & Variables */
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="how-it-works-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="workflow.title">工作原理</h2>
-            <p class="section-subtitle" data-i18n="workflow.subtitle">完整的记忆生命周期管理</p>
-            <div class="workflow-diagram">
-                <div class="workflow-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3 data-i18n="workflow.step1.title">记忆添加</h3>
-                        <p data-i18n="workflow.step1.desc">应用通过 API/CLI/MCP 提交文本,系统使用 LLM 提取关键事实</p>
-                    </div>
-                </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3 data-i18n="workflow.step2.title">向量存储</h3>
-                        <p data-i18n="workflow.step2.desc">生成语义向量并存储到 Qdrant,支持高效的相似度搜索</p>
-                    </div>
-                </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3 data-i18n="workflow.step3.title">智能搜索</h3>
-                        <p data-i18n="workflow.step3.desc">通过自然语言查询,快速检索最相关的记忆</p>
-                    </div>
-                </div>
-                <div class="workflow-arrow">→</div>
-                <div class="workflow-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3 data-i18n="workflow.step4.title">自动优化</h3>
-                        <p data-i18n="workflow.step4.desc">定期去重、合并和清理记忆,保持知识库高质量</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+			:root {
+				/* Primary Colors - Rust Theme */
+				--rust-orange: #ff6b35;
+				--rust-red: #ce4257;
+				--rust-gold: #f7931e;
 
-    <!-- Screenshots Section -->
-    <section class="screenshots-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="screenshots.title">可视化仪表板</h2>
-            <p class="section-subtitle" data-i18n="screenshots.subtitle">实时监控、分析和管理 AI 的记忆</p>
-            
-            <div class="screenshot-hero">
-                <img src="https://raw.githubusercontent.com/sopaco/cortex-mem/main/assets/snapshots/insights/snapshot_dashboard.png" 
-                     alt="Cortex Memory Dashboard" 
-                     loading="lazy">
-                <p class="screenshot-caption" data-i18n="screenshots.dashboard">交互式仪表板 - 实时了解记忆使用情况、系统健康和活动统计</p>
-            </div>
+				/* Accent Colors */
+				--cyan: #00d9ff;
+				--purple: #9947eb;
+				--green: #28ca5b;
+				--amber: #fbbf18;
 
-            <div class="screenshots-grid">
-                <div class="screenshot-card">
-                    <img src="https://raw.githubusercontent.com/sopaco/cortex-mem/main/assets/snapshots/insights/snapshot_memories.png" 
-                         alt="Memory Management" 
-                         loading="lazy">
-                    <h3 data-i18n="screenshots.memories.title">记忆管理</h3>
-                    <p data-i18n="screenshots.memories.desc">查看和管理单个记忆记录,支持搜索、过滤和编辑</p>
-                </div>
-                <div class="screenshot-card">
-                    <img src="https://raw.githubusercontent.com/sopaco/cortex-mem/main/assets/snapshots/insights/snapshot_optimization.png" 
-                         alt="Memory Optimization" 
-                         loading="lazy">
-                    <h3 data-i18n="screenshots.optimization.title">记忆优化</h3>
-                    <p data-i18n="screenshots.optimization.desc">分析和优化记忆质量,自动去重和合并相似内容</p>
-                </div>
-                <div class="screenshot-card">
-                    <img src="https://raw.githubusercontent.com/sopaco/cortex-mem/main/assets/snapshots/insights/snapshot_monitor.png" 
-                         alt="Performance Monitor" 
-                         loading="lazy">
-                    <h3 data-i18n="screenshots.monitor.title">性能监控</h3>
-                    <p data-i18n="screenshots.monitor.desc">监控记忆性能和活动,实时查看系统运行状态</p>
-                </div>
-                <div class="screenshot-card">
-                    <img src="https://raw.githubusercontent.com/sopaco/cortex-mem/main/assets/snapshots/insights/snapshot_analytics.png" 
-                         alt="Analytics & Trends" 
-                         loading="lazy">
-                    <h3 data-i18n="screenshots.analytics.title">数据分析</h3>
-                    <p data-i18n="screenshots.analytics.desc">详细洞察和趋势分析,了解记忆随时间的演变</p>
-                </div>
-            </div>
-        </div>
-    </section>
+				/* Neutral Colors */
+				--bg-dark: #0a0a0a;
+				--bg-card: #141419;
+				--bg-card-hover: #1a1a1f;
+				--text-primary: #fafafa;
+				--text-secondary: #a1a1aa;
+				--text-muted: #cbd5e0;
+				--border-color: rgba(255, 107, 53, 0.2);
 
-    <!-- Ecosystem -->
-    <section class="ecosystem-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="ecosystem.title">完整的生态系统</h2>
-            <p class="section-subtitle" data-i18n="ecosystem.subtitle">模块化设计,灵活集成</p>
-            <div class="ecosystem-grid">
-                <div class="ecosystem-card">
-                    <div class="ecosystem-icon">⚙️</div>
-                    <h3>cortex-mem-core</h3>
-                    <p class="card-badge" data-i18n="ecosystem.core.badge">核心引擎</p>
-                    <p class="card-desc" data-i18n="ecosystem.core.desc">包含所有记忆管理业务逻辑,包括提取、优化和搜索</p>
-                    <ul class="feature-tags">
-                        <li data-i18n="ecosystem.core.tag1">事实提取</li>
-                        <li data-i18n="ecosystem.core.tag2">语义搜索</li>
-                        <li data-i18n="ecosystem.core.tag3">自动优化</li>
-                    </ul>
-                </div>
-                <div class="ecosystem-card">
-                    <div class="ecosystem-icon">🌐</div>
-                    <h3>cortex-mem-service</h3>
-                    <p class="card-badge" data-i18n="ecosystem.service.badge">REST API</p>
-                    <p class="card-desc" data-i18n="ecosystem.service.desc">高性能 REST API,可被任何编程语言或系统访问</p>
-                    <ul class="feature-tags">
-                        <li data-i18n="ecosystem.service.tag1">跨语言</li>
-                        <li data-i18n="ecosystem.service.tag2">RESTful</li>
-                        <li data-i18n="ecosystem.service.tag3">高并发</li>
-                    </ul>
-                </div>
-                <div class="ecosystem-card">
-                    <div class="ecosystem-icon">💻</div>
-                    <h3>cortex-mem-cli</h3>
-                    <p class="card-badge" data-i18n="ecosystem.cli.badge">命令行工具</p>
-                    <p class="card-desc" data-i18n="ecosystem.cli.desc">开发者和管理员直接与记忆存储交互的命令行工具</p>
-                    <ul class="feature-tags">
-                        <li data-i18n="ecosystem.cli.tag1">便捷管理</li>
-                        <li data-i18n="ecosystem.cli.tag2">批量操作</li>
-                        <li data-i18n="ecosystem.cli.tag3">脚本友好</li>
-                    </ul>
-                </div>
-                <div class="ecosystem-card">
-                    <div class="ecosystem-icon">📊</div>
-                    <h3>cortex-mem-insights</h3>
-                    <p class="card-badge" data-i18n="ecosystem.insights.badge">Web 仪表板</p>
-                    <p class="card-desc" data-i18n="ecosystem.insights.desc">提供记忆分析和可视化的 Web 管理工具</p>
-                    <ul class="feature-tags">
-                        <li data-i18n="ecosystem.insights.tag1">实时监控</li>
-                        <li data-i18n="ecosystem.insights.tag2">数据分析</li>
-                        <li data-i18n="ecosystem.insights.tag3">可视化</li>
-                    </ul>
-                </div>
-                <div class="ecosystem-card">
-                    <div class="ecosystem-icon">🔌</div>
-                    <h3>cortex-mem-mcp</h3>
-                    <p class="card-badge" data-i18n="ecosystem.mcp.badge">MCP 适配器</p>
-                    <p class="card-desc" data-i18n="ecosystem.mcp.desc">将 Cortex Memory 集成为 AI Agent 框架工具的适配器</p>
-                    <ul class="feature-tags">
-                        <li data-i18n="ecosystem.mcp.tag1">MCP 协议</li>
-                        <li data-i18n="ecosystem.mcp.tag2">插件化</li>
-                        <li data-i18n="ecosystem.mcp.tag3">易集成</li>
-                    </ul>
-                </div>
-                <div class="ecosystem-card">
-                    <div class="ecosystem-icon">🤖</div>
-                    <h3>cortex-mem-rig</h3>
-                    <p class="card-badge" data-i18n="ecosystem.rig.badge">Rig 集成</p>
-                    <p class="card-desc" data-i18n="ecosystem.rig.desc">专门的 Rig 框架集成,用于自主 LLM Agent</p>
-                    <ul class="feature-tags">
-                        <li data-i18n="ecosystem.rig.tag1">Rig 原生</li>
-                        <li data-i18n="ecosystem.rig.tag2">Agent 优化</li>
-                        <li data-i18n="ecosystem.rig.tag3">开箱即用</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+				/* Gradients */
+				--gradient-primary: linear-gradient(135deg, #ff6b35, #f7931e);
+				--gradient-text: linear-gradient(135deg, #00d9ff, #9947eb);
+				--gradient-card: linear-gradient(
+					135deg,
+					rgba(20, 20, 25, 0.9),
+					rgba(30, 30, 40, 0.9)
+				);
 
-    <!-- Use Cases -->
-    <section class="use-cases-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="usecases.title">应用场景</h2>
-            <div class="use-cases-grid">
-                <div class="use-case-card">
-                    <div class="use-case-icon">💬</div>
-                    <h3 data-i18n="usecases.chatbot.title">智能客服机器人</h3>
-                    <p data-i18n="usecases.chatbot.desc">记住用户历史对话和偏好,提供个性化服务体验</p>
-                </div>
-                <div class="use-case-card">
-                    <div class="use-case-icon">👨‍💼</div>
-                    <h3 data-i18n="usecases.assistant.title">个人 AI 助手</h3>
-                    <p data-i18n="usecases.assistant.desc">长期学习用户习惯,成为真正的"第二大脑"伴侣</p>
-                </div>
-                <div class="use-case-card">
-                    <div class="use-case-icon">🤖</div>
-                    <h3 data-i18n="usecases.agent.title">自主 AI Agent</h3>
-                    <p data-i18n="usecases.agent.desc">为 AI Agent 提供持久记忆骨架,支持复杂任务执行</p>
-                </div>
-                <div class="use-case-card">
-                    <div class="use-case-icon">🎓</div>
-                    <h3 data-i18n="usecases.learning.title">学习陪伴系统</h3>
-                    <p data-i18n="usecases.learning.desc">跟踪学习进度和知识点,提供针对性辅导建议</p>
-                </div>
-            </div>
-        </div>
-    </section>
+				/* Fonts */
+				--font-body: 'Inter', system-ui, sans-serif;
+				--font-heading: 'Space Grotesk', sans-serif;
+				--font-code: 'JetBrains Mono', monospace;
+			}
 
-    <!-- Get Started -->
-    <section id="get-started" class="get-started-section">
-        <div class="container">
-            <h2 class="section-title" data-i18n="getstarted.title">快速开始</h2>
-            <div class="install-steps">
-                <div class="step-card">
-                    <div class="step-header">
-                        <span class="step-badge">Step 1</span>
-                        <h3 data-i18n="getstarted.step1.title">安装依赖</h3>
-                    </div>
-                    <div class="code-block">
-                        <code># 安装 Rust (1.70+)
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+			body {
+				font-family: var(--font-body);
+				background: var(--bg-dark);
+				color: var(--text-primary);
+				line-height: 1.6;
+				overflow-x: hidden;
+			}
 
-# 启动 Qdrant 向量数据库
-docker run -p 6333:6333 qdrant/qdrant</code>
-                    </div>
-                </div>
+			/* Utilities */
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 24px;
+			}
 
-                <div class="step-card">
-                    <div class="step-header">
-                        <span class="step-badge">Step 2</span>
-                        <h3 data-i18n="getstarted.step2.title">安装 Cortex Memory</h3>
-                    </div>
-                    <div class="code-block">
-                        <code># 安装 CLI 工具
+			.section {
+				padding: 80px 0;
+				position: relative;
+			}
+
+			.section-title {
+				font-family: var(--font-heading);
+				font-size: 48px;
+				font-weight: 700;
+				text-align: center;
+				margin-bottom: 16px;
+			}
+
+			.section-subtitle {
+				font-size: 18px;
+				color: var(--text-secondary);
+				text-align: center;
+				margin-bottom: 60px;
+			}
+
+			.gradient-text {
+				background: var(--gradient-text);
+				background-size: 200% auto;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+				animation: gradient-shift 3s ease infinite;
+			}
+
+			@keyframes gradient-shift {
+				0%,
+				100% {
+					background-position: 0% 50%;
+				}
+				50% {
+					background-position: 100% 50%;
+				}
+			}
+
+			/* Navigation */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				background: rgba(10, 10, 10, 0.8);
+				backdrop-filter: blur(10px);
+				border-bottom: 1px solid var(--border-color);
+				padding: 16px 0;
+				z-index: 1000;
+			}
+
+			nav .container {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.nav-logo {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				font-family: var(--font-heading);
+				font-size: 24px;
+				font-weight: 700;
+				text-decoration: none;
+				color: var(--text-primary);
+			}
+
+			.nav-logo img {
+				width: 32px;
+				height: 32px;
+				object-fit: contain;
+			}
+
+			.nav-links {
+				display: flex;
+				gap: 32px;
+				align-items: center;
+			}
+
+			.nav-links a {
+				color: var(--text-secondary);
+				text-decoration: none;
+				font-size: 15px;
+				transition: color 0.3s;
+			}
+
+			.nav-links a:hover {
+				color: var(--text-primary);
+			}
+
+			.btn {
+				padding: 10px 24px;
+				border-radius: 8px;
+				font-size: 15px;
+				font-weight: 500;
+				text-decoration: none;
+				transition: all 0.3s;
+				cursor: pointer;
+				border: none;
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white !important;
+			}
+
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+			}
+
+			.btn-secondary {
+				background: transparent;
+				border: 1px solid var(--border-color);
+				color: var(--text-primary);
+			}
+
+			.btn-secondary:hover {
+				border-color: var(--rust-orange);
+				background: rgba(255, 107, 53, 0.1);
+			}
+
+			/* Hero Section */
+			.hero {
+				padding: 160px 0 100px;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.hero-background {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				opacity: 0.3;
+				z-index: 0;
+			}
+
+			.particle {
+				position: absolute;
+				width: 4px;
+				height: 4px;
+				background: var(--rust-orange);
+				border-radius: 50%;
+				animation: particle-float 6s ease-in-out infinite;
+			}
+
+			@keyframes particle-float {
+				0%,
+				100% {
+					transform: translate(0, 0) scale(1);
+					opacity: 0.5;
+				}
+				25% {
+					transform: translate(20px, -30px) scale(1.2);
+					opacity: 0.8;
+				}
+				50% {
+					transform: translate(-10px, 10px) scale(0.8);
+					opacity: 0.3;
+				}
+				75% {
+					transform: translate(-15px, 20px) scale(1.1);
+					opacity: 0.6;
+				}
+			}
+
+			.hero-content {
+				position: relative;
+				z-index: 1;
+				text-align: center;
+			}
+
+			.hero h1 {
+				font-family: var(--font-heading);
+				font-size: 64px;
+				font-weight: 700;
+				line-height: 1.2;
+				margin-bottom: 24px;
+			}
+
+			.hero h2 {
+				font-size: 24px;
+				color: var(--cyan);
+				font-weight: 500;
+				margin-bottom: 40px;
+			}
+
+			.hero-cta {
+				display: flex;
+				gap: 16px;
+				justify-content: center;
+				margin-bottom: 40px;
+			}
+
+			.hero-badges {
+				display: flex;
+				gap: 32px;
+				justify-content: center;
+				flex-wrap: wrap;
+				margin-top: 60px;
+			}
+
+			.badge {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				font-size: 14px;
+				color: var(--text-secondary);
+			}
+
+			.badge i {
+				color: var(--rust-orange);
+			}
+
+			.benchmark-badge {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				padding: 12px 24px;
+				border-radius: 24px;
+				font-size: 14px;
+				color: var(--text-primary);
+				margin-top: 20px;
+				display: inline-block;
+			}
+
+			.benchmark-badge a {
+				color: var(--cyan);
+				text-decoration: none;
+				margin-left: 8px;
+			}
+
+			/* Why Cortex Section */
+			.why-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+				gap: 32px;
+			}
+
+			.why-card {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				border-radius: 16px;
+				padding: 40px;
+				transition: all 0.3s;
+			}
+
+			.why-card:hover {
+				transform: translateY(-8px);
+				border-color: rgba(255, 107, 53, 0.5);
+				box-shadow: 0 16px 48px rgba(255, 107, 53, 0.2);
+			}
+
+			.why-card-icon {
+				font-size: 48px;
+				margin-bottom: 24px;
+			}
+
+			.why-card h3 {
+				font-family: var(--font-heading);
+				font-size: 24px;
+				margin-bottom: 16px;
+				color: var(--text-primary);
+			}
+
+			.why-card p {
+				color: var(--text-muted);
+				line-height: 1.8;
+				margin-bottom: 24px;
+			}
+
+			.why-card-stats {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			.why-card-stats div {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				font-size: 14px;
+				color: var(--text-secondary);
+			}
+
+			.why-card-stats i {
+				color: var(--green);
+			}
+
+			/* Design Philosophy Section */
+			.philosophy-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 24px;
+			}
+
+			.philosophy-card {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				border-radius: 16px;
+				padding: 32px;
+				transition: all 0.3s;
+			}
+
+			.philosophy-card:hover {
+				transform: translateY(-8px);
+				border-color: rgba(255, 107, 53, 0.5);
+				box-shadow: 0 16px 48px rgba(255, 107, 53, 0.2);
+			}
+
+			.philosophy-card h3 {
+				font-family: var(--font-heading);
+				font-size: 24px;
+				background: var(--gradient-text);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				margin-bottom: 16px;
+			}
+
+			.philosophy-card p {
+				color: var(--text-muted);
+				line-height: 1.8;
+				margin-bottom: 24px;
+			}
+
+			.philosophy-visual {
+				background: rgba(10, 10, 10, 0.8);
+				border: 1px solid rgba(0, 217, 255, 0.2);
+				border-radius: 12px;
+				padding: 24px;
+				font-family: var(--font-code);
+				font-size: 13px;
+				line-height: 1.6;
+				overflow-x: auto;
+			}
+
+			.file-tree {
+				color: var(--cyan);
+			}
+
+			.file-tree .folder {
+				color: var(--green);
+			}
+
+			.file-tree .file {
+				color: #6dd4ed;
+			}
+
+			.layers {
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+			}
+
+			.layer {
+				padding: 16px;
+				border-radius: 8px;
+				border-left: 4px solid;
+			}
+
+			.layer-l0 {
+				background: rgba(40, 202, 91, 0.1);
+				border-color: var(--green);
+			}
+
+			.layer-l1 {
+				background: rgba(153, 71, 235, 0.1);
+				border-color: var(--purple);
+			}
+
+			.layer-l2 {
+				background: rgba(251, 191, 24, 0.1);
+				border-color: var(--amber);
+			}
+
+			.layer-title {
+				font-weight: 600;
+				margin-bottom: 4px;
+			}
+
+			.layer-desc {
+				font-size: 12px;
+				color: var(--text-secondary);
+			}
+
+			.flow-diagram {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				align-items: center;
+			}
+
+			.flow-box {
+				background: rgba(0, 217, 255, 0.1);
+				border: 1px solid rgba(0, 217, 255, 0.3);
+				border-radius: 8px;
+				padding: 12px 24px;
+				text-align: center;
+				color: var(--cyan);
+			}
+
+			.flow-arrow {
+				color: var(--rust-orange);
+				font-size: 24px;
+			}
+
+			.evolution-visual {
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				padding: 40px 20px;
+				position: relative;
+			}
+
+			.evolution-node {
+				text-align: center;
+				position: relative;
+			}
+
+			.evolution-icon {
+				font-size: 48px;
+				margin-bottom: 12px;
+			}
+
+			.infinity {
+				font-size: 64px;
+				color: var(--purple);
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+
+			.evolution-arrow {
+				position: absolute;
+				font-size: 16px;
+				font-weight: 600;
+			}
+
+			.arrow-left {
+				top: 30%;
+				left: 25%;
+				color: var(--cyan);
+			}
+
+			.arrow-right {
+				bottom: 30%;
+				right: 25%;
+				color: var(--purple);
+			}
+
+			.evolution-particles {
+				position: absolute;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				animation: orbit 4s linear infinite;
+			}
+
+			@keyframes orbit {
+				0% {
+					transform: rotate(0deg) translateX(60px) rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg) translateX(60px) rotate(-360deg);
+				}
+			}
+
+			/* Performance Section */
+			.perf-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 24px;
+				margin-bottom: 60px;
+			}
+
+			.perf-card {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				border-radius: 16px;
+				padding: 32px;
+				text-align: center;
+			}
+
+			.perf-icon {
+				font-size: 48px;
+				margin-bottom: 16px;
+			}
+
+			.perf-value {
+				font-family: var(--font-heading);
+				font-size: 36px;
+				color: var(--rust-orange);
+				margin-bottom: 8px;
+			}
+
+			.perf-label {
+				color: var(--text-secondary);
+				font-size: 14px;
+			}
+
+			.benchmark-chart {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				border-radius: 16px;
+				padding: 40px;
+			}
+
+			.chart-row {
+				margin-bottom: 24px;
+			}
+
+			.chart-label {
+				font-size: 14px;
+				margin-bottom: 8px;
+				color: var(--text-secondary);
+			}
+
+			.chart-bar {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.bar {
+				height: 32px;
+				background: var(--gradient-primary);
+				border-radius: 4px;
+				transition: width 1s ease;
+			}
+
+			.bar-value {
+				font-family: var(--font-code);
+				font-size: 14px;
+				color: var(--text-primary);
+				min-width: 80px;
+			}
+
+			/* Architecture Section */
+			.arch-diagram {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				border-radius: 16px;
+				padding: 40px;
+				margin-bottom: 40px;
+			}
+
+			.arch-layer {
+				background: rgba(255, 107, 53, 0.05);
+				border: 1px solid var(--border-color);
+				border-radius: 12px;
+				padding: 24px;
+				margin-bottom: 16px;
+			}
+
+			.arch-layer-title {
+				font-family: var(--font-heading);
+				font-size: 18px;
+				color: var(--rust-orange);
+				margin-bottom: 16px;
+			}
+
+			.arch-components {
+				display: flex;
+				gap: 12px;
+				flex-wrap: wrap;
+			}
+
+			.arch-component {
+				background: var(--bg-dark);
+				border: 1px solid rgba(0, 217, 255, 0.2);
+				padding: 8px 16px;
+				border-radius: 6px;
+				font-size: 13px;
+				color: var(--cyan);
+			}
+
+			.features-list {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 16px;
+			}
+
+			.feature-item {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				padding: 12px;
+				background: rgba(40, 202, 91, 0.05);
+				border-radius: 8px;
+			}
+
+			.feature-item i {
+				color: var(--green);
+			}
+
+			/* Quick Start Section */
+			.quickstart-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+				gap: 32px;
+			}
+
+			.quickstart-card {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				border-radius: 16px;
+				padding: 32px;
+			}
+
+			.quickstart-card h3 {
+				font-family: var(--font-heading);
+				font-size: 28px;
+				margin-bottom: 16px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			.quickstart-card p {
+				color: var(--text-secondary);
+				margin-bottom: 24px;
+			}
+
+			.code-block {
+				background: rgba(10, 10, 10, 0.9);
+				border: 1px solid rgba(0, 217, 255, 0.2);
+				border-radius: 12px;
+				padding: 20px;
+				font-family: var(--font-code);
+				font-size: 14px;
+				line-height: 1.8;
+				overflow-x: auto;
+				position: relative;
+			}
+
+			.code-block pre {
+				margin: 0;
+			}
+
+			.code-comment {
+				color: var(--text-secondary);
+			}
+
+			.code-keyword {
+				color: var(--purple);
+			}
+
+			.code-function {
+				color: var(--amber);
+			}
+
+			.code-string {
+				color: var(--green);
+			}
+
+			.interface-tags {
+				display: flex;
+				gap: 12px;
+				flex-wrap: wrap;
+				margin-top: 24px;
+			}
+
+			.interface-tag {
+				background: rgba(0, 217, 255, 0.1);
+				border: 1px solid rgba(0, 217, 255, 0.3);
+				padding: 6px 12px;
+				border-radius: 6px;
+				font-size: 13px;
+				color: var(--cyan);
+			}
+
+			/* Ecosystem Section */
+			.ecosystem-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+				gap: 24px;
+				margin-bottom: 60px;
+			}
+
+			.ecosystem-card {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-color);
+				border-radius: 12px;
+				padding: 24px;
+				text-align: center;
+				transition: all 0.3s;
+			}
+
+			.ecosystem-card:hover {
+				transform: translateY(-4px);
+				border-color: var(--rust-orange);
+			}
+
+			.ecosystem-card h4 {
+				font-family: var(--font-code);
+				font-size: 16px;
+				color: var(--rust-orange);
+				margin-bottom: 8px;
+			}
+
+			.ecosystem-card p {
+				font-size: 13px;
+				color: var(--text-secondary);
+			}
+
+			.integrations {
+				text-align: center;
+			}
+
+			.integration-badges {
+				display: flex;
+				gap: 16px;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+
+			.integration-badge {
+				background: var(--bg-dark);
+				border: 1px solid var(--border-color);
+				padding: 8px 16px;
+				border-radius: 8px;
+				font-size: 14px;
+				color: var(--text-primary);
+			}
+
+			/* Footer */
+			footer {
+				background: var(--bg-card);
+				border-top: 1px solid var(--border-color);
+				padding: 60px 0 30px;
+			}
+
+			.footer-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 40px;
+				margin-bottom: 40px;
+			}
+
+			.footer-section h4 {
+				font-family: var(--font-heading);
+				font-size: 18px;
+				margin-bottom: 20px;
+			}
+
+			.footer-section p {
+				color: var(--text-secondary);
+				line-height: 1.8;
+				margin-bottom: 16px;
+			}
+
+			.footer-links {
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+			}
+
+			.footer-links a {
+				color: var(--text-secondary);
+				text-decoration: none;
+				transition: color 0.3s;
+			}
+
+			.footer-links a:hover {
+				color: var(--rust-orange);
+			}
+
+			.footer-bottom {
+				text-align: center;
+				padding-top: 30px;
+				border-top: 1px solid var(--border-color);
+				color: var(--text-secondary);
+				font-size: 14px;
+			}
+
+			/* Responsive */
+			@media (max-width: 768px) {
+				.hero h1 {
+					font-size: 40px;
+				}
+
+				.hero h2 {
+					font-size: 18px;
+				}
+
+				.section-title {
+					font-size: 36px;
+				}
+
+				.philosophy-grid,
+				.quickstart-grid {
+					grid-template-columns: 1fr;
+				}
+
+				.nav-links {
+					display: none;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Navigation -->
+		<nav>
+			<div class="container">
+				<a href="#" class="nav-logo">
+					<img src="favicon.png" alt="Cortex Memory Logo" />
+					Cortex Memory
+				</a>
+				<div class="nav-links">
+					<a href="https://github.com/sopaco/cortex-mem/tree/main/litho.docs/en"
+						>Documentation</a
+					>
+					<a href="https://github.com/sopaco/cortex-mem">GitHub</a>
+					<a href="#performance">Benchmark</a>
+					<a href="#" class="btn btn-primary">Get Started →</a>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Hero Section -->
+		<section class="hero">
+			<div class="hero-background" id="particles-container"></div>
+			<div class="container">
+				<div class="hero-content">
+					<h1>
+						The AI-native <span class="gradient-text">Memory Framework</span><br />
+						for Building Intelligent Agents
+					</h1>
+					<h2>Built with Rust. Blazingly Fast. Production Ready.</h2>
+
+					<div class="hero-cta">
+						<a href="https://github.com/sopaco/cortex-mem" class="btn btn-primary">
+							Get Started <i class="fas fa-arrow-right"></i>
+						</a>
+						<a href="https://github.com/sopaco/cortex-mem" class="btn btn-secondary">
+							<i class="fab fa-github"></i> View on GitHub
+						</a>
+					</div>
+
+					<div class="benchmark-badge">
+						📊 <strong>3x Faster</strong> than LangMem
+						<a href="#performance">View Benchmark →</a>
+					</div>
+
+					<div class="hero-badges">
+						<div class="badge">
+							<i class="fab fa-rust"></i>
+							Rust Powered
+						</div>
+						<div class="badge">
+							<i class="fas fa-bolt"></i>
+							High Performance
+						</div>
+						<div class="badge">
+							<i class="fas fa-lock"></i>
+							Multi-Tenant
+						</div>
+						<div class="badge">
+							<i class="fas fa-box"></i>
+							Easy Deploy
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Why Cortex Memory Section -->
+		<section class="section">
+			<div class="container">
+				<h2 class="section-title">Why Cortex Memory?</h2>
+				<p class="section-subtitle">Built for production, powered by Rust</p>
+
+				<div class="why-grid">
+					<div class="why-card">
+						<div class="why-card-icon">🦀</div>
+						<h3>Built with Rust</h3>
+						<p>
+							Zero-cost abstractions, fearless concurrency, and guaranteed memory
+							safety. Cortex Memory leverages Rust's type system to deliver
+							production-grade performance without sacrificing developer experience.
+						</p>
+						<div class="why-card-stats">
+							<div><i class="fas fa-check-circle"></i> 3x faster indexing</div>
+							<div><i class="fas fa-check-circle"></i> 100% memory safe</div>
+							<div><i class="fas fa-check-circle"></i> Single binary deployment</div>
+						</div>
+					</div>
+
+					<div class="why-card">
+						<div class="why-card-icon">🚀</div>
+						<h3>Production Ready</h3>
+						<p>
+							Enterprise-grade multi-tenancy with strict data isolation. Deploy once,
+							serve thousands of users with tenant-scoped collections and filesystem
+							partitioning.
+						</p>
+						<div class="why-card-stats">
+							<div><i class="fas fa-check-circle"></i> SaaS-ready isolation</div>
+							<div><i class="fas fa-check-circle"></i> Built-in security</div>
+							<div><i class="fas fa-check-circle"></i> Per-tenant analytics</div>
+						</div>
+					</div>
+
+					<div class="why-card">
+						<div class="why-card-icon">🔌</div>
+						<h3>Easy Integration</h3>
+						<p>
+							Integrate via REST API, CLI, MCP protocol, or native Rust library. From
+							chatbots to enterprise systems—Cortex Memory adapts to your stack.
+						</p>
+						<div class="why-card-stats">
+							<div><i class="fas fa-check-circle"></i> REST API</div>
+							<div><i class="fas fa-check-circle"></i> MCP protocol</div>
+							<div><i class="fas fa-check-circle"></i> Native Rust library</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Design Philosophy Section -->
+		<section
+			class="section"
+			style="
+				background: linear-gradient(
+					180deg,
+					transparent,
+					rgba(255, 107, 53, 0.02),
+					transparent
+				);
+			"
+		>
+			<div class="container">
+				<h2 class="section-title">Design Philosophy</h2>
+				<p class="section-subtitle">
+					Principles for building scalable, long-running AI agents
+				</p>
+
+				<div class="philosophy-grid">
+					<!-- Card 1: File System -->
+					<div class="philosophy-card">
+						<h3>🗂️ Context Organization as a File System</h3>
+						<p>
+							Everything is stored as files. Resources, users, sessions, and memories
+							are organized in a hierarchical filesystem structure using the
+							<code>cortex://</code> URI scheme—making context portable, versionable,
+							and compatible with Git.
+						</p>
+						<div class="philosophy-visual">
+							<div class="file-tree">
+								<pre>cortex:// File System
+│
+├─ <span class="folder">📁 resources/</span>
+│  ├─ <span class="file">📄 api_docs.md</span>
+│  └─ <span class="file">📄 best_practices.md</span>
+│
+├─ <span class="folder">📁 user/</span>
+│  └─ <span class="folder">📁 user_001/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 agent/</span>
+│  └─ <span class="folder">📁 assistant_v2/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 session/</span>
+│  └─ <span class="folder">📁 sess_20260219/</span>
+│     ├─ <span class="file">📄 timeline.md</span>
+│     ├─ <span class="file">📄 L1_overview.md</span>
+│     └─ <span class="file">📄 L0_abstract.md</span>
+│
+└─ <span class="folder">📁 memories/</span>
+   ├─ <span class="file">📄 preferences.json</span>
+   └─ <span class="file">📄 decisions.json</span></pre>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 2: Layered Loading -->
+					<div class="philosophy-card">
+						<h3>📚 Layered Context Loading</h3>
+						<p>
+							Progressive context disclosure through a three-tier hierarchy. Load only
+							what's needed—from high-level abstracts (L0) to detailed transcripts
+							(L2)—optimizing LLM token usage while maintaining rich context.
+						</p>
+						<div class="philosophy-visual">
+							<div
+								style="
+									text-align: right;
+									color: var(--text-secondary);
+									font-size: 12px;
+									margin-bottom: 16px;
+								"
+							>
+								Agent initiate operation ↓
+							</div>
+							<div class="layers">
+								<div class="layer layer-l0">
+									<div class="layer-title">L0 Abstract</div>
+									<div class="layer-desc">
+										Tokens &lt; 100 • High-level intent summary
+									</div>
+								</div>
+								<div style="text-align: center; color: var(--rust-orange)">↓</div>
+								<div class="layer layer-l1">
+									<div class="layer-title">L1 Overview</div>
+									<div class="layer-desc">
+										Tokens &lt; 2k • Structured markdown summary
+									</div>
+								</div>
+								<div style="text-align: center; color: var(--rust-orange)">↓</div>
+								<div class="layer layer-l2">
+									<div class="layer-title">L2 Detail</div>
+									<div class="layer-desc">
+										Uncertain Token • Full conversation transcript
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 3: Recursive Retrieval -->
+					<div class="philosophy-card">
+						<h3>🔄 Recursive Context Retrieval</h3>
+						<p>
+							Intelligent context discovery using hierarchical retrieval. Start with
+							directory-level positioning, perform local vector search, and rerank
+							results—ensuring relevant memories surface even in large knowledge
+							bases.
+						</p>
+						<div class="philosophy-visual">
+							<div class="flow-diagram">
+								<div class="flow-box">Intent</div>
+								<div class="flow-arrow">↓</div>
+								<div
+									style="
+										border: 2px dashed rgba(0, 217, 255, 0.3);
+										border-radius: 12px;
+										padding: 20px;
+										width: 100%;
+									"
+								>
+									<div
+										style="
+											color: var(--cyan);
+											margin-bottom: 12px;
+											font-weight: 600;
+										"
+									>
+										Hierarchical Retriever
+									</div>
+									<div class="flow-diagram">
+										<div class="flow-box" style="font-size: 12px">
+											Directory Position
+										</div>
+										<div class="flow-arrow" style="font-size: 16px">↓</div>
+										<div class="flow-box" style="font-size: 12px">
+											Local Search
+										</div>
+										<div class="flow-arrow" style="font-size: 16px">↓</div>
+										<div class="flow-box" style="font-size: 12px">Rerank</div>
+									</div>
+								</div>
+								<div class="flow-arrow">↓</div>
+								<div class="flow-box">Context</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Card 4: Self-Evolving -->
+					<div class="philosophy-card">
+						<h3>♾️ Observable and Self-Evolving Context</h3>
+						<p>
+							Memory evolves through continuous agent-context interaction. Every
+							session commit triggers automated extraction, profiling, and
+							indexing—building a knowledge base that grows smarter over time without
+							manual intervention.
+						</p>
+						<div class="philosophy-visual">
+							<div class="evolution-visual">
+								<div class="evolution-node">
+									<div class="evolution-icon">🤖</div>
+									<div style="font-size: 13px; color: var(--text-secondary)">
+										Agent
+									</div>
+								</div>
+
+								<div class="infinity">∞</div>
+
+								<div class="evolution-node">
+									<div class="evolution-icon">🔥</div>
+									<div style="font-size: 13px; color: var(--text-secondary)">
+										Cortex Memory
+									</div>
+								</div>
+
+								<div class="evolution-arrow arrow-left">← Context Supply</div>
+								<div class="evolution-arrow arrow-right">Session Commit →</div>
+
+								<div
+									class="evolution-particles"
+									style="background: var(--cyan)"
+								></div>
+								<div
+									class="evolution-particles"
+									style="background: var(--purple); animation-delay: 2s"
+								></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Performance Section -->
+		<section class="section" id="performance">
+			<div class="container">
+				<h2 class="section-title">Performance That Matters</h2>
+				<p class="section-subtitle">Built with Rust for production workloads</p>
+
+				<div class="perf-grid">
+					<div class="perf-card">
+						<div class="perf-icon">🚀</div>
+						<div class="perf-value">3x</div>
+						<div class="perf-label">Faster Indexing Speed</div>
+					</div>
+					<div class="perf-card">
+						<div class="perf-icon">💾</div>
+						<div class="perf-value">70%</div>
+						<div class="perf-label">Less Memory Footprint</div>
+					</div>
+					<div class="perf-card">
+						<div class="perf-icon">📦</div>
+						<div class="perf-value">1</div>
+						<div class="perf-label">Single Binary Deploy</div>
+					</div>
+				</div>
+
+				<div class="benchmark-chart">
+					<h3 style="margin-bottom: 32px; color: var(--text-primary)">
+						Benchmark Comparison
+					</h3>
+
+					<div class="chart-row">
+						<div class="chart-label">Indexing Speed (messages/sec)</div>
+						<div class="chart-bar">
+							<div class="bar" style="width: 60%"></div>
+							<div class="bar-value">Cortex Memory: 15,000</div>
+						</div>
+						<div class="chart-bar" style="opacity: 0.5">
+							<div class="bar" style="width: 20%; background: #666"></div>
+							<div class="bar-value">LangMem: 5,000</div>
+						</div>
+					</div>
+
+					<div class="chart-row">
+						<div class="chart-label">Memory Usage (MB for 10k sessions)</div>
+						<div class="chart-bar">
+							<div class="bar" style="width: 23%"></div>
+							<div class="bar-value">Cortex Memory: 120 MB</div>
+						</div>
+						<div class="chart-bar" style="opacity: 0.5">
+							<div class="bar" style="width: 73%; background: #666"></div>
+							<div class="bar-value">LangMem: 380 MB</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Architecture Section -->
+		<section class="section">
+			<div class="container">
+				<h2 class="section-title">Architecture Overview</h2>
+				<p class="section-subtitle">Modular, scalable, and production-ready</p>
+
+				<div class="arch-diagram">
+					<div class="arch-layer">
+						<div class="arch-layer-title">Access Layer</div>
+						<div class="arch-components">
+							<div class="arch-component">CLI</div>
+							<div class="arch-component">REST API</div>
+							<div class="arch-component">MCP Protocol</div>
+							<div class="arch-component">Web UI</div>
+						</div>
+					</div>
+
+					<div
+						style="
+							text-align: center;
+							color: var(--rust-orange);
+							font-size: 24px;
+							margin: 16px 0;
+						"
+					>
+						↓
+					</div>
+
+					<div class="arch-layer">
+						<div class="arch-layer-title">Core Business Layer</div>
+						<div class="arch-components">
+							<div class="arch-component">Session Management</div>
+							<div class="arch-component">Layer Management (L0/L1/L2)</div>
+							<div class="arch-component">Search Engine</div>
+							<div class="arch-component">Extraction Engine</div>
+							<div class="arch-component">Automation (File Watcher, Auto Index)</div>
+						</div>
+					</div>
+
+					<div
+						style="
+							text-align: center;
+							color: var(--rust-orange);
+							font-size: 24px;
+							margin: 16px 0;
+						"
+					>
+						↓
+					</div>
+
+					<div class="arch-layer">
+						<div class="arch-layer-title">Infrastructure Layer</div>
+						<div class="arch-components">
+							<div class="arch-component">Qdrant Vector DB</div>
+							<div class="arch-component">Filesystem Storage</div>
+							<div class="arch-component">LLM API</div>
+							<div class="arch-component">Embedding API</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="features-list">
+					<div class="feature-item">
+						<i class="fas fa-check-circle"></i>
+						Multi-tenant isolation via collection suffixing
+					</div>
+					<div class="feature-item">
+						<i class="fas fa-check-circle"></i>
+						Event-driven automation with Tokio
+					</div>
+					<div class="feature-item">
+						<i class="fas fa-check-circle"></i>
+						Hybrid storage: Filesystem + Vector DB
+					</div>
+					<div class="feature-item">
+						<i class="fas fa-check-circle"></i>
+						Three-tier memory hierarchy (L0/L1/L2)
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Quick Start Section -->
+		<section
+			class="section"
+			style="
+				background: linear-gradient(
+					180deg,
+					transparent,
+					rgba(0, 217, 255, 0.02),
+					transparent
+				);
+			"
+		>
+			<div class="container">
+				<h2 class="section-title">Get Started in Seconds</h2>
+
+				<div class="quickstart-grid">
+					<div class="quickstart-card">
+						<h3>
+							<i class="fas fa-box" style="color: var(--rust-orange)"></i> 1. Install
+						</h3>
+						<p>Get started with a single command</p>
+						<div class="code-block">
+							<pre><span class="code-comment"># Via Cargo</span>
 cargo install cortex-mem-cli
 
-# 安装 REST API 服务
-cargo install cortex-mem-service
+<span class="code-comment"># Or download pre-built binary</span>
+curl -fsSL https://cortex-mem.io/install.sh | sh</pre>
+						</div>
+					</div>
 
-# 安装 MCP 服务器
-cargo install cortex-mem-mcp</code>
-                    </div>
-                </div>
+					<div class="quickstart-card">
+						<h3>
+							<i class="fas fa-code" style="color: var(--cyan)"></i> 2. Start Using
+						</h3>
+						<p>Minimal API surface for context operations</p>
+						<div class="code-block">
+							<pre><span class="code-keyword">use</span> cortex_mem_core::MemoryOperations;
 
-                <div class="step-card">
-                    <div class="step-header">
-                        <span class="step-badge">Step 3</span>
-                        <h3 data-i18n="getstarted.step3.title">配置和运行</h3>
-                    </div>
-                    <div class="code-block">
-                        <code># 创建配置文件 config.toml
-# 配置 Qdrant URL 和 LLM API
+<span class="code-comment">// Initialize memory system</span>
+<span class="code-keyword">let</span> memory = MemoryOperations::new(config).<span class="code-keyword">await</span>?;
 
-# 启动 API 服务
-cortex-mem-service
+<span class="code-comment">// Semantic search</span>
+<span class="code-keyword">let</span> results = memory.<span class="code-function">search</span>(<span class="code-string">"user preferences"</span>, filters).<span class="code-keyword">await</span>?;
 
-# 或使用 CLI 添加记忆
-cortex-mem-cli add --content "用户喜欢 Rust 编程" --user-id "user123"</code>
-                    </div>
-                </div>
-            </div>
+<span class="code-comment">// Access via cortex:// URIs</span>
+<span class="code-keyword">let</span> content = memory.<span class="code-function">read</span>(<span class="code-string">"cortex://user/001/profile.json"</span>).<span class="code-keyword">await</span>?;</pre>
+						</div>
+						<div class="interface-tags">
+							<div class="interface-tag">Rust Library</div>
+							<div class="interface-tag">REST API</div>
+							<div class="interface-tag">MCP Protocol</div>
+							<div class="interface-tag">CLI Tool</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-            <div class="quick-links">
-                <a href="https://github.com/sopaco/cortex-mem/tree/main/litho.docs" target="_blank" class="quick-link-card">
-                    <span class="link-icon">📚</span>
-                    <div>
-                        <h4 data-i18n="getstarted.link1.title">完整文档</h4>
-                        <p data-i18n="getstarted.link1.desc">查看详细的技术文档和架构说明</p>
-                    </div>
-                </a>
-                <a href="https://github.com/sopaco/cortex-mem/tree/main/examples" target="_blank" class="quick-link-card">
-                    <span class="link-icon">💡</span>
-                    <div>
-                        <h4 data-i18n="getstarted.link2.title">示例项目</h4>
-                        <p data-i18n="getstarted.link2.desc">查看 Cortex TARS 等实际应用案例</p>
-                    </div>
-                </a>
-                <a href="https://github.com/sopaco/cortex-mem/issues" target="_blank" class="quick-link-card">
-                    <span class="link-icon">💬</span>
-                    <div>
-                        <h4 data-i18n="getstarted.link3.title">社区支持</h4>
-                        <p data-i18n="getstarted.link3.desc">提问、报告问题或参与讨论</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
+		<!-- Ecosystem Section -->
+		<section class="section">
+			<div class="container">
+				<h2 class="section-title">The Cortex Memory Ecosystem</h2>
+				<p class="section-subtitle">Modular components for every use case</p>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 data-i18n="cta.title">准备好让你的 AI 拥有记忆了吗?</h2>
-                <p data-i18n="cta.subtitle">加入开发者社区,构建真正智能的 AI 应用</p>
-                <div class="cta-buttons">
-                    <a href="https://github.com/sopaco/cortex-mem" target="_blank" class="btn btn-primary btn-lg">
-                        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        <span data-i18n="cta.github">访问 GitHub</span>
-                    </a>
-                    <a href="https://github.com/sponsors/sopaco" target="_blank" class="btn btn-secondary btn-lg" data-i18n="cta.sponsor">
-                        ❤️ 赞助项目
-                    </a>
-                </div>
-                <div class="github-stats">
-                    <span data-i18n="cta.star">⭐ 给我们一个 Star 支持项目发展</span>
-                </div>
-            </div>
-        </div>
-    </section>
+				<div class="ecosystem-grid">
+					<div class="ecosystem-card">
+						<h4>cortex-mem-core</h4>
+						<p>Core library with memory operations</p>
+					</div>
+					<div class="ecosystem-card">
+						<h4>cortex-mem-service</h4>
+						<p>REST API server (Axum-based)</p>
+					</div>
+					<div class="ecosystem-card">
+						<h4>cortex-mem-cli</h4>
+						<p>Command-line interface tool</p>
+					</div>
+					<div class="ecosystem-card">
+						<h4>cortex-mem-insights</h4>
+						<p>Web dashboard (Svelte 5)</p>
+					</div>
+					<div class="ecosystem-card">
+						<h4>cortex-mem-mcp</h4>
+						<p>Model Context Protocol server</p>
+					</div>
+					<div class="ecosystem-card">
+						<h4>cortex-mem-rig</h4>
+						<p>Rig framework adapter</p>
+					</div>
+				</div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>🧠 Cortex Memory</h4>
-                    <p data-i18n="footer.tagline">AI 原生的记忆管理框架</p>
-                </div>
-                <div class="footer-section">
-                    <h4 data-i18n="footer.resources">资源</h4>
-                    <a href="https://github.com/sopaco/cortex-mem" data-i18n="footer.github">GitHub</a>
-                    <a href="https://github.com/sopaco/cortex-mem/tree/main/litho.docs" data-i18n="footer.docs">文档</a>
-                    <a href="https://github.com/sopaco/cortex-mem/tree/main/examples" data-i18n="footer.examples">示例</a>
-                </div>
-                <div class="footer-section">
-                    <h4 data-i18n="footer.community">社区</h4>
-                    <a href="https://github.com/sopaco/cortex-mem/issues" data-i18n="footer.issues">问题反馈</a>
-                    <a href="https://github.com/sopaco/cortex-mem/discussions" data-i18n="footer.discussions">讨论区</a>
-                    <a href="https://github.com/sponsors/sopaco" data-i18n="footer.sponsor">赞助</a>
-                </div>
-                <div class="footer-section">
-                    <h4 data-i18n="footer.about">关于</h4>
-                    <a href="https://github.com/sopaco/cortex-mem/blob/main/LICENSE" data-i18n="footer.license">MIT 开源协议</a>
-                    <a href="https://github.com/sopaco" data-i18n="footer.author">作者</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p data-i18n="footer.copyright">&copy; 2025 Cortex Memory. 基于 MIT 协议开源.</p>
-            </div>
-        </div>
-    </footer>
+				<div class="integrations">
+					<h3 style="margin-bottom: 24px; color: var(--text-secondary)">Works with</h3>
+					<div class="integration-badges">
+						<div class="integration-badge">Rig</div>
+						<div class="integration-badge">TARS</div>
+						<div class="integration-badge">Cursor</div>
+						<div class="integration-badge">GitHub Copilot</div>
+						<div class="integration-badge">LangChain</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
-    <script src="i18n.js"></script>
-    <script src="script.js"></script>
-</body>
+		<!-- Footer -->
+		<footer>
+			<div class="container">
+				<div class="footer-grid">
+					<div class="footer-section">
+						<h4>🧠 Cortex Memory</h4>
+						<p>
+							The AI-native memory framework built with Rust. Transform your stateless
+							AI into an intelligent, context-aware partner.
+						</p>
+						<p style="margin-top: 20px">
+							<a
+								href="https://github.com/sopaco/cortex-mem"
+								class="btn btn-secondary"
+								style="display: inline-flex"
+							>
+								<i class="fab fa-github"></i> Star on GitHub
+							</a>
+						</p>
+					</div>
+
+					<div class="footer-section">
+						<h4>Resources</h4>
+						<div class="footer-links">
+							<a href="https://github.com/sopaco/cortex-mem/tree/main/litho.docs"
+								>Documentation</a
+							>
+							<a href="https://github.com/sopaco/cortex-mem">GitHub Repository</a>
+							<a
+								href="https://raw.githubusercontent.com/sopaco/cortex-mem/refs/heads/main/assets/benchmark/cortex_mem_vs_langmem.png"
+								>Benchmark Report</a
+							>
+							<a href="https://github.com/sopaco/cortex-mem/releases">Changelog</a>
+						</div>
+					</div>
+
+					<div class="footer-section">
+						<h4>Community</h4>
+						<div class="footer-links">
+							<a href="https://github.com/sopaco/cortex-mem/discussions"
+								>GitHub Discussions</a
+							>
+							<a href="#">Discord Community</a>
+							<a href="#">Twitter</a>
+							<a href="#">Blog</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="footer-bottom">
+					© 2026 Cortex Memory. Licensed under MIT. Built with ❤️ and Rust 🦀
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			// Particle background animation
+			const particlesContainer = document.getElementById('particles-container');
+			const particleCount = 50;
+
+			for (let i = 0; i < particleCount; i++) {
+				const particle = document.createElement('div');
+				particle.className = 'particle';
+				particle.style.left = Math.random() * 100 + '%';
+				particle.style.top = Math.random() * 100 + '%';
+				particle.style.animationDelay = Math.random() * 6 + 's';
+				particle.style.animationDuration = Math.random() * 4 + 4 + 's';
+				particlesContainer.appendChild(particle);
+			}
+
+			// Smooth scroll
+			document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+				anchor.addEventListener('click', function (e) {
+					e.preventDefault();
+					const target = document.querySelector(this.getAttribute('href'));
+					if (target) {
+						target.scrollIntoView({
+							behavior: 'smooth',
+							block: 'start'
+						});
+					}
+				});
+			});
+
+			// Intersection Observer for animations
+			const observerOptions = {
+				threshold: 0.1,
+				rootMargin: '0px 0px -100px 0px'
+			};
+
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.style.opacity = '1';
+						entry.target.style.transform = 'translateY(0)';
+					}
+				});
+			}, observerOptions);
+
+			// Observe all cards
+			document
+				.querySelectorAll('.why-card, .philosophy-card, .perf-card, .ecosystem-card')
+				.forEach((card) => {
+					card.style.opacity = '0';
+					card.style.transform = 'translateY(30px)';
+					card.style.transition = 'all 0.6s ease-out';
+					observer.observe(card);
+				});
+
+			// Animate benchmark bars on scroll
+			const chartObserver = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.querySelectorAll('.bar').forEach((bar) => {
+								const width = bar.style.width;
+								bar.style.width = '0';
+								setTimeout(() => {
+									bar.style.width = width;
+								}, 100);
+							});
+						}
+					});
+				},
+				{ threshold: 0.5 }
+			);
+
+			const benchmarkChart = document.querySelector('.benchmark-chart');
+			if (benchmarkChart) {
+				chartObserver.observe(benchmarkChart);
+			}
+		</script>
+	</body>
 </html>
