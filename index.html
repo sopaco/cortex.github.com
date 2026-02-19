@@ -988,6 +988,59 @@
 				font-size: 14px;
 			}
 
+			/* Language Selector Styles */
+			.language-selector {
+				position: relative;
+				margin-left: 15px;
+				display: flex;
+				align-items: center;
+			}
+
+			.language-select {
+				appearance: none;
+				background-color: rgba(255, 255, 255, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				color: var(--text-primary);
+				padding: 8px 12px;
+				border-radius: 6px;
+				font-size: 14px;
+				cursor: pointer;
+				min-width: 100px;
+				transition: all 0.2s ease;
+			}
+
+			.language-select:hover {
+				background-color: rgba(255, 255, 255, 0.15);
+				border-color: rgba(255, 255, 255, 0.3);
+			}
+
+			.language-select:focus {
+				outline: none;
+				border-color: var(--rust-orange);
+				box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2);
+			}
+
+			/* Language Selector Arrow */
+			.language-selector::after {
+				content: '▼';
+				position: absolute;
+				right: 12px;
+				top: 50%;
+				transform: translateY(-50%);
+				color: var(--text-secondary);
+				font-size: 10px;
+				pointer-events: none;
+			}
+
+			/* Language-specific font optimizations */
+			body.zh {
+				font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+			}
+
+			body.ja {
+				font-family: 'Hiragino Sans', 'Helvetica Neue', Arial, sans-serif;
+			}
+
 			/* Responsive */
 			@media (max-width: 768px) {
 				.hero h1 {
@@ -1010,6 +1063,13 @@
 				.nav-links {
 					display: none;
 				}
+
+				.language-selector {
+					position: fixed;
+					top: 15px;
+					right: 15px;
+					z-index: 1000;
+				}
 			}
 		</style>
 	</head>
@@ -1019,15 +1079,24 @@
 			<div class="container">
 				<a href="#" class="nav-logo">
 					<img src="favicon.png" alt="Cortex Memory Logo" />
-					Cortex Memory
+					<span data-i18n="nav.logo">Cortex Memory</span>
 				</a>
 				<div class="nav-links">
-					<a href="https://github.com/sopaco/cortex-mem/tree/main/litho.docs/en"
+					<a
+						href="https://github.com/sopaco/cortex-mem/tree/main/litho.docs/en"
+						data-i18n="nav.docs"
 						>Documentation</a
 					>
 					<a href="https://github.com/sopaco/cortex-mem">GitHub</a>
-					<a href="#performance">Benchmark</a>
-					<a href="#" class="btn btn-primary">Get Started →</a>
+					<a href="#performance" data-i18n="nav.benchmark">Benchmark</a>
+					<a href="#" class="btn btn-primary" data-i18n="nav.getStarted">Get Started →</a>
+					<div class="language-selector">
+						<select id="language-select" class="language-select">
+							<option value="en">English</option>
+							<option value="zh">中文</option>
+							<option value="ja">日本語</option>
+						</select>
+					</div>
 				</div>
 			</div>
 		</nav>
@@ -1037,42 +1106,47 @@
 			<div class="hero-background" id="particles-container"></div>
 			<div class="container">
 				<div class="hero-content">
-					<h1>
+					<h1 data-i18n="hero.title">
 						The AI-native <span class="gradient-text">Memory Framework</span><br />
 						for Building Intelligent Agents
 					</h1>
-					<h2>Built with Rust. Blazingly Fast. Production Ready.</h2>
+					<h2 data-i18n="hero.subtitle">
+						Built with Rust. Blazingly Fast. Production Ready.
+					</h2>
 
 					<div class="hero-cta">
 						<a href="https://github.com/sopaco/cortex-mem" class="btn btn-primary">
-							Get Started <i class="fas fa-arrow-right"></i>
+							<span data-i18n="hero.getStarted">Get Started</span>
+							<i class="fas fa-arrow-right"></i>
 						</a>
 						<a href="https://github.com/sopaco/cortex-mem" class="btn btn-secondary">
-							<i class="fab fa-github"></i> View on GitHub
+							<i class="fab fa-github"></i>
+							<span data-i18n="hero.viewOnGithub">View on GitHub</span>
 						</a>
 					</div>
 
 					<div class="benchmark-badge">
-						📊 <strong>3x Faster</strong> than LangMem
-						<a href="#performance">View Benchmark →</a>
+						📊 <strong data-i18n="hero.benchmark">3x Faster</strong>
+						<span data-i18n="hero.benchmarkThan">than LangMem</span>
+						<a href="#performance" data-i18n="hero.viewBenchmark">View Benchmark →</a>
 					</div>
 
 					<div class="hero-badges">
 						<div class="badge">
 							<i class="fab fa-rust"></i>
-							Rust Powered
+							<span data-i18n="hero.rustPowered">Rust Powered</span>
 						</div>
 						<div class="badge">
 							<i class="fas fa-bolt"></i>
-							High Performance
+							<span data-i18n="hero.highPerformance">High Performance</span>
 						</div>
 						<div class="badge">
 							<i class="fas fa-lock"></i>
-							Multi-Tenant
+							<span data-i18n="hero.multiTenant">Multi-Tenant</span>
 						</div>
 						<div class="badge">
 							<i class="fas fa-box"></i>
-							Easy Deploy
+							<span data-i18n="hero.easyDeploy">Easy Deploy</span>
 						</div>
 					</div>
 				</div>
@@ -1082,51 +1156,80 @@
 		<!-- Why Cortex Memory Section -->
 		<section class="section">
 			<div class="container">
-				<h2 class="section-title">Why Cortex Memory?</h2>
-				<p class="section-subtitle">Built for production, powered by Rust</p>
+				<h2 class="section-title" data-i18n="why.title">Why Cortex Memory?</h2>
+				<p class="section-subtitle" data-i18n="why.subtitle">
+					Built for production, powered by Rust
+				</p>
 
 				<div class="why-grid">
 					<div class="why-card">
 						<div class="why-card-icon">🦀</div>
-						<h3>Built with Rust</h3>
-						<p>
+						<h3 data-i18n="why.card1Title">Built with Rust</h3>
+						<p data-i18n="why.card1Desc">
 							Zero-cost abstractions, fearless concurrency, and guaranteed memory
 							safety. Cortex Memory leverages Rust's type system to deliver
 							production-grade performance without sacrificing developer experience.
 						</p>
 						<div class="why-card-stats">
-							<div><i class="fas fa-check-circle"></i> 3x faster indexing</div>
-							<div><i class="fas fa-check-circle"></i> 100% memory safe</div>
-							<div><i class="fas fa-check-circle"></i> Single binary deployment</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card1Feature1">3x faster indexing</span>
+							</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card1Feature2">100% memory safe</span>
+							</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card1Feature3">Single binary deployment</span>
+							</div>
 						</div>
 					</div>
 
 					<div class="why-card">
 						<div class="why-card-icon">🚀</div>
-						<h3>Production Ready</h3>
-						<p>
+						<h3 data-i18n="why.card2Title">Production Ready</h3>
+						<p data-i18n="why.card2Desc">
 							Enterprise-grade multi-tenancy with strict data isolation. Deploy once,
 							serve thousands of users with tenant-scoped collections and filesystem
 							partitioning.
 						</p>
 						<div class="why-card-stats">
-							<div><i class="fas fa-check-circle"></i> SaaS-ready isolation</div>
-							<div><i class="fas fa-check-circle"></i> Built-in security</div>
-							<div><i class="fas fa-check-circle"></i> Per-tenant analytics</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card2Feature1">SaaS-ready isolation</span>
+							</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card2Feature2">Built-in security</span>
+							</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card2Feature3">Per-tenant analytics</span>
+							</div>
 						</div>
 					</div>
 
 					<div class="why-card">
 						<div class="why-card-icon">🔌</div>
-						<h3>Easy Integration</h3>
-						<p>
+						<h3 data-i18n="why.card3Title">Easy Integration</h3>
+						<p data-i18n="why.card3Desc">
 							Integrate via REST API, CLI, MCP protocol, or native Rust library. From
 							chatbots to enterprise systems—Cortex Memory adapts to your stack.
 						</p>
 						<div class="why-card-stats">
-							<div><i class="fas fa-check-circle"></i> REST API</div>
-							<div><i class="fas fa-check-circle"></i> MCP protocol</div>
-							<div><i class="fas fa-check-circle"></i> Native Rust library</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card3Feature1">REST API</span>
+							</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card3Feature2">MCP protocol</span>
+							</div>
+							<div>
+								<i class="fas fa-check-circle"></i>
+								<span data-i18n="why.card3Feature3">Native Rust library</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -1146,16 +1249,16 @@
 			"
 		>
 			<div class="container">
-				<h2 class="section-title">Design Philosophy</h2>
-				<p class="section-subtitle">
+				<h2 class="section-title" data-i18n="philosophy.title">Design Philosophy</h2>
+				<p class="section-subtitle" data-i18n="philosophy.subtitle">
 					Principles for building scalable, long-running AI agents
 				</p>
 
 				<div class="philosophy-grid">
 					<!-- Card 1: File System -->
 					<div class="philosophy-card">
-						<h3>🗂️ Context Organization as a File System</h3>
-						<p>
+						<h3 data-i18n="philosophy.card1Title">🗂️ Context Organization as a File System</h3>
+						<p data-i18n="philosophy.card1Desc">
 							Everything is stored as files. Resources, users, sessions, and memories
 							are organized in a hierarchical filesystem structure using the
 							<code>cortex://</code> URI scheme—making context portable, versionable,
@@ -1163,7 +1266,7 @@
 						</p>
 						<div class="philosophy-visual">
 							<div class="file-tree">
-								<pre>cortex:// File System
+								<pre data-i18n="philosophy.fileSystemTree">cortex:// File System
 │
 ├─ <span class="folder">📁 resources/</span>
 │  ├─ <span class="file">📄 api_docs.md</span>
@@ -1192,8 +1295,8 @@
 
 					<!-- Card 2: Layered Loading -->
 					<div class="philosophy-card">
-						<h3>📚 Layered Context Loading</h3>
-						<p>
+						<h3 data-i18n="philosophy.card2Title">📚 Layered Context Loading</h3>
+						<p data-i18n="philosophy.card2Desc">
 							Progressive context disclosure through a three-tier hierarchy. Load only
 							what's needed—from high-level abstracts (L0) to detailed transcripts
 							(L2)—optimizing LLM token usage while maintaining rich context.
@@ -1207,26 +1310,26 @@
 									margin-bottom: 16px;
 								"
 							>
-								Agent initiate operation ↓
+								<span data-i18n="philosophy.agentInitiate">Agent initiate operation</span> ↓
 							</div>
 							<div class="layers">
 								<div class="layer layer-l0">
-									<div class="layer-title">L0 Abstract</div>
-									<div class="layer-desc">
+									<div class="layer-title" data-i18n="philosophy.l0Title">L0 Abstract</div>
+									<div class="layer-desc" data-i18n="philosophy.l0Desc">
 										Tokens &lt; 100 • High-level intent summary
 									</div>
 								</div>
 								<div style="text-align: center; color: var(--rust-orange)">↓</div>
 								<div class="layer layer-l1">
-									<div class="layer-title">L1 Overview</div>
-									<div class="layer-desc">
+									<div class="layer-title" data-i18n="philosophy.l1Title">L1 Overview</div>
+									<div class="layer-desc" data-i18n="philosophy.l1Desc">
 										Tokens &lt; 2k • Structured markdown summary
 									</div>
 								</div>
 								<div style="text-align: center; color: var(--rust-orange)">↓</div>
 								<div class="layer layer-l2">
-									<div class="layer-title">L2 Detail</div>
-									<div class="layer-desc">
+									<div class="layer-title" data-i18n="philosophy.l2Title">L2 Detail</div>
+									<div class="layer-desc" data-i18n="philosophy.l2Desc">
 										Uncertain Token • Full conversation transcript
 									</div>
 								</div>
@@ -1236,8 +1339,8 @@
 
 					<!-- Card 3: Recursive Retrieval -->
 					<div class="philosophy-card">
-						<h3>🔄 Recursive Context Retrieval</h3>
-						<p>
+						<h3 data-i18n="philosophy.card3Title">🔄 Recursive Context Retrieval</h3>
+						<p data-i18n="philosophy.card3Desc">
 							Intelligent context discovery using hierarchical retrieval. Start with
 							directory-level positioning, perform local vector search, and rerank
 							results—ensuring relevant memories surface even in large knowledge
@@ -1245,7 +1348,7 @@
 						</p>
 						<div class="philosophy-visual">
 							<div class="flow-diagram">
-								<div class="flow-box">Intent</div>
+								<div class="flow-box" data-i18n="philosophy.intent">Intent</div>
 								<div class="flow-arrow">↓</div>
 								<div
 									style="
@@ -1262,30 +1365,30 @@
 											font-weight: 600;
 										"
 									>
-										Hierarchical Retriever
+										<span data-i18n="philosophy.hierarchicalRetriever">Hierarchical Retriever</span>
 									</div>
 									<div class="flow-diagram">
 										<div class="flow-box" style="font-size: 12px">
-											Directory Position
+											<span data-i18n="philosophy.directoryPosition">Directory Position</span>
 										</div>
 										<div class="flow-arrow" style="font-size: 16px">↓</div>
 										<div class="flow-box" style="font-size: 12px">
-											Local Search
+											<span data-i18n="philosophy.localSearch">Local Search</span>
 										</div>
 										<div class="flow-arrow" style="font-size: 16px">↓</div>
-										<div class="flow-box" style="font-size: 12px">Rerank</div>
+										<div class="flow-box" style="font-size: 12px" data-i18n="philosophy.rerank">Rerank</div>
 									</div>
 								</div>
 								<div class="flow-arrow">↓</div>
-								<div class="flow-box">Context</div>
+								<div class="flow-box" data-i18n="philosophy.context">Context</div>
 							</div>
 						</div>
 					</div>
 
 					<!-- Card 4: Self-Evolving -->
 					<div class="philosophy-card">
-						<h3>♾️ Observable and Self-Evolving Context</h3>
-						<p>
+						<h3 data-i18n="philosophy.card4Title">♾️ Observable and Self-Evolving Context</h3>
+						<p data-i18n="philosophy.card4Desc">
 							Memory evolves through continuous agent-context interaction. Every
 							session commit triggers automated extraction, profiling, and
 							indexing—building a knowledge base that grows smarter over time without
@@ -1296,7 +1399,7 @@
 								<div class="evolution-node">
 									<div class="node-agent">
 										<div class="evolution-icon">🤖</div>
-										<div class="node-label">Agent</div>
+										<div class="node-label" data-i18n="philosophy.nodeAgent">Agent</div>
 									</div>
 
 									<div
@@ -1307,19 +1410,19 @@
 
 									<div class="node-memory">
 										<div class="evolution-icon">🔥</div>
-										<div class="node-label">Cortex Memory</div>
+										<div class="node-label" data-i18n="philosophy.nodeMemory">Cortex Memory</div>
 									</div>
 								</div>
 
 								<div class="evolution-flow">
 									<div class="flow-arrow arrow-left">
-										Context Supply
+										<span data-i18n="philosophy.contextSupply">Context Supply</span>
 										<div class="arrow-line"></div>
 										→
 									</div>
 
 									<div class="flow-arrow arrow-right">
-										Session Commit
+										<span data-i18n="philosophy.sessionCommit">Session Commit</span>
 										<div class="arrow-line"></div>
 										→
 									</div>
@@ -1340,8 +1443,8 @@
 		<!-- Performance Section -->
 		<section class="section" id="performance">
 			<div class="container">
-				<h2 class="section-title">Performance That Matters</h2>
-				<p class="section-subtitle">
+				<h2 class="section-title" data-i18n="performance.title">Performance That Matters</h2>
+				<p class="section-subtitle" data-i18n="performance.subtitle">
 					Built with Rust for production workloads
 					<a
 						href="https://github.com/sopaco/cortex-mem?tab=readme-ov-file#-benchmark"
@@ -1349,7 +1452,7 @@
 						rel="noopener noreferrer"
 						class="benchmark-link"
 					>
-						View benchmark results <i class="fas fa-arrow-right"></i>
+						<span data-i18n="performance.viewBenchmark">View benchmark results</span> <i class="fas fa-arrow-right"></i>
 					</a>
 				</p>
 
@@ -1357,46 +1460,46 @@
 					<div class="perf-card">
 						<div class="perf-icon">🚀</div>
 						<div class="perf-value">3x</div>
-						<div class="perf-label">Faster Indexing Speed</div>
+						<div class="perf-label" data-i18n="performance.indexingSpeed">Faster Indexing Speed</div>
 					</div>
 					<div class="perf-card">
 						<div class="perf-icon">💾</div>
 						<div class="perf-value">70%</div>
-						<div class="perf-label">Less Memory Footprint</div>
+						<div class="perf-label" data-i18n="performance.memoryFootprint">Less Memory Footprint</div>
 					</div>
 					<div class="perf-card">
 						<div class="perf-icon">📦</div>
 						<div class="perf-value">1</div>
-						<div class="perf-label">Single Binary Deploy</div>
+						<div class="perf-label" data-i18n="performance.binaryDeploy">Single Binary Deploy</div>
 					</div>
 				</div>
 
 				<div class="benchmark-chart">
 					<h3 style="margin-bottom: 32px; color: var(--text-primary)">
-						Benchmark Comparison
+						<span data-i18n="performance.benchmarkComparison">Benchmark Comparison</span>
 					</h3>
 
 					<div class="chart-row">
-						<div class="chart-label">Indexing Speed (messages/sec)</div>
+						<div class="chart-label" data-i18n="performance.indexingSpeedLabel">Indexing Speed (messages/sec)</div>
 						<div class="chart-bar">
 							<div class="bar" style="width: 60%"></div>
-							<div class="bar-value">Cortex Memory: 15,000</div>
+							<div class="bar-value"><span data-i18n="performance.cortexMemory">Cortex Memory</span>: 15,000</div>
 						</div>
 						<div class="chart-bar" style="opacity: 0.5">
 							<div class="bar" style="width: 20%; background: #666"></div>
-							<div class="bar-value">LangMem: 5,000</div>
+							<div class="bar-value"><span data-i18n="performance.langMem">LangMem</span>: 5,000</div>
 						</div>
 					</div>
 
 					<div class="chart-row">
-						<div class="chart-label">Memory Usage (MB for 10k sessions)</div>
+						<div class="chart-label" data-i18n="performance.memoryUsageLabel">Memory Usage (MB for 10k sessions)</div>
 						<div class="chart-bar">
 							<div class="bar" style="width: 23%"></div>
-							<div class="bar-value">Cortex Memory: 120 MB</div>
+							<div class="bar-value"><span data-i18n="performance.cortexMemory">Cortex Memory</span>: 120 MB</div>
 						</div>
 						<div class="chart-bar" style="opacity: 0.5">
 							<div class="bar" style="width: 73%; background: #666"></div>
-							<div class="bar-value">LangMem: 380 MB</div>
+							<div class="bar-value"><span data-i18n="performance.langMem">LangMem</span>: 380 MB</div>
 						</div>
 					</div>
 				</div>
@@ -1406,17 +1509,17 @@
 		<!-- Architecture Section -->
 		<section class="section">
 			<div class="container">
-				<h2 class="section-title">Architecture Overview</h2>
-				<p class="section-subtitle">Modular, scalable, and production-ready</p>
+				<h2 class="section-title" data-i18n="architecture.title">Architecture Overview</h2>
+				<p class="section-subtitle" data-i18n="architecture.subtitle">Modular, scalable, and production-ready</p>
 
 				<div class="arch-diagram">
 					<div class="arch-layer">
-						<div class="arch-layer-title">Access Layer</div>
+						<div class="arch-layer-title" data-i18n="architecture.accessLayer">Access Layer</div>
 						<div class="arch-components">
-							<div class="arch-component">CLI</div>
-							<div class="arch-component">REST API</div>
-							<div class="arch-component">MCP Protocol</div>
-							<div class="arch-component">Web UI</div>
+							<div class="arch-component" data-i18n="architecture.cli">CLI</div>
+							<div class="arch-component" data-i18n="architecture.restApi">REST API</div>
+							<div class="arch-component" data-i18n="architecture.mcpProtocol">MCP Protocol</div>
+							<div class="arch-component" data-i18n="architecture.webUi">Web UI</div>
 						</div>
 					</div>
 
@@ -1432,13 +1535,13 @@
 					</div>
 
 					<div class="arch-layer">
-						<div class="arch-layer-title">Core Business Layer</div>
+						<div class="arch-layer-title" data-i18n="architecture.coreLayer">Core Business Layer</div>
 						<div class="arch-components">
-							<div class="arch-component">Session Management</div>
-							<div class="arch-component">Layer Management (L0/L1/L2)</div>
-							<div class="arch-component">Search Engine</div>
-							<div class="arch-component">Extraction Engine</div>
-							<div class="arch-component">Automation (File Watcher, Auto Index)</div>
+							<div class="arch-component" data-i18n="architecture.sessionManagement">Session Management</div>
+							<div class="arch-component" data-i18n="architecture.layerManagement">Layer Management (L0/L1/L2)</div>
+							<div class="arch-component" data-i18n="architecture.searchEngine">Search Engine</div>
+							<div class="arch-component" data-i18n="architecture.extractionEngine">Extraction Engine</div>
+							<div class="arch-component" data-i18n="architecture.automation">Automation (File Watcher, Auto Index)</div>
 						</div>
 					</div>
 
@@ -1454,12 +1557,12 @@
 					</div>
 
 					<div class="arch-layer">
-						<div class="arch-layer-title">Infrastructure Layer</div>
+						<div class="arch-layer-title" data-i18n="architecture.infrastructureLayer">Infrastructure Layer</div>
 						<div class="arch-components">
-							<div class="arch-component">Qdrant Vector DB</div>
-							<div class="arch-component">Filesystem Storage</div>
-							<div class="arch-component">LLM API</div>
-							<div class="arch-component">Embedding API</div>
+							<div class="arch-component" data-i18n="architecture.qdrant">Qdrant Vector DB</div>
+							<div class="arch-component" data-i18n="architecture.filesystemStorage">Filesystem Storage</div>
+							<div class="arch-component" data-i18n="architecture.llmApi">LLM API</div>
+							<div class="arch-component" data-i18n="architecture.embeddingApi">Embedding API</div>
 						</div>
 					</div>
 				</div>
@@ -1467,19 +1570,19 @@
 				<div class="features-list">
 					<div class="feature-item">
 						<i class="fas fa-check-circle"></i>
-						Multi-tenant isolation via collection suffixing
+						<span data-i18n="architecture.feature1">Multi-tenant isolation via collection suffixing</span>
 					</div>
 					<div class="feature-item">
 						<i class="fas fa-check-circle"></i>
-						Event-driven automation with Tokio
+						<span data-i18n="architecture.feature2">Event-driven automation with Tokio</span>
 					</div>
 					<div class="feature-item">
 						<i class="fas fa-check-circle"></i>
-						Hybrid storage: Filesystem + Vector DB
+						<span data-i18n="architecture.feature3">Hybrid storage: Filesystem + Vector DB</span>
 					</div>
 					<div class="feature-item">
 						<i class="fas fa-check-circle"></i>
-						Three-tier memory hierarchy (L0/L1/L2)
+						<span data-i18n="architecture.feature4">Three-tier memory hierarchy (L0/L1/L2)</span>
 					</div>
 				</div>
 			</div>
@@ -1498,45 +1601,45 @@
 			"
 		>
 			<div class="container">
-				<h2 class="section-title">Get Started in Seconds</h2>
+				<h2 class="section-title" data-i18n="quickstart.title">Get Started in Seconds</h2>
 
 				<div class="quickstart-grid">
 					<div class="quickstart-card">
 						<h3>
-							<i class="fas fa-box" style="color: var(--rust-orange)"></i> 1. Install
+							<i class="fas fa-box" style="color: var(--rust-orange)"></i> <span data-i18n="quickstart.installTitle">1. Install</span>
 						</h3>
-						<p>Get started with a single command</p>
+						<p data-i18n="quickstart.installDesc">Get started with a single command</p>
 						<div class="code-block">
-							<pre><span class="code-comment"># Via Cargo</span>
+							<span class="code-comment" data-i18n="quickstart.cargoComment"># Via Cargo</span>
 cargo install cortex-mem-cli
 
-<span class="code-comment"># Or download pre-built binary</span>
+								<span class="code-comment" data-i18n="quickstart.binaryComment"># Or download pre-built binary</span>
 curl -fsSL https://cortex-mem.io/install.sh | sh</pre>
 						</div>
 					</div>
 
 					<div class="quickstart-card">
 						<h3>
-							<i class="fas fa-code" style="color: var(--cyan)"></i> 2. Start Using
+							<i class="fas fa-code" style="color: var(--cyan)"></i> <span data-i18n="quickstart.startTitle">2. Start Using</span>
 						</h3>
-						<p>Minimal API surface for context operations</p>
+						<p data-i18n="quickstart.startDesc">Minimal API surface for context operations</p>
 						<div class="code-block">
 							<pre><span class="code-keyword">use</span> cortex_mem_core::MemoryOperations;
 
-<span class="code-comment">// Initialize memory system</span>
+								<span class="code-comment" data-i18n="quickstart.initializeComment">// Initialize memory system</span>
 <span class="code-keyword">let</span> memory = MemoryOperations::new(config).<span class="code-keyword">await</span>?;
 
-<span class="code-comment">// Semantic search</span>
+								<span class="code-comment" data-i18n="quickstart.semanticComment">// Semantic search</span>
 <span class="code-keyword">let</span> results = memory.<span class="code-function">search</span>(<span class="code-string">"user preferences"</span>, filters).<span class="code-keyword">await</span>?;
 
-<span class="code-comment">// Access via cortex:// URIs</span>
+								<span class="code-comment" data-i18n="quickstart.accessComment">// Access via cortex:// URIs</span>
 <span class="code-keyword">let</span> content = memory.<span class="code-function">read</span>(<span class="code-string">"cortex://user/001/profile.json"</span>).<span class="code-keyword">await</span>?;</pre>
 						</div>
 						<div class="interface-tags">
-							<div class="interface-tag">Rust Library</div>
-							<div class="interface-tag">REST API</div>
-							<div class="interface-tag">MCP Protocol</div>
-							<div class="interface-tag">CLI Tool</div>
+							<div class="interface-tag" data-i18n="quickstart.rustLibrary">Rust Library</div>
+							<div class="interface-tag" data-i18n="quickstart.restApi">REST API</div>
+							<div class="interface-tag" data-i18n="quickstart.mcpProtocol">MCP Protocol</div>
+							<div class="interface-tag" data-i18n="quickstart.cliTool">CLI Tool</div>
 						</div>
 					</div>
 				</div>
@@ -1546,44 +1649,44 @@ curl -fsSL https://cortex-mem.io/install.sh | sh</pre>
 		<!-- Ecosystem Section -->
 		<section class="section">
 			<div class="container">
-				<h2 class="section-title">The Cortex Memory Ecosystem</h2>
-				<p class="section-subtitle">Modular components for every use case</p>
+				<h2 class="section-title" data-i18n="ecosystem.title">The Cortex Memory Ecosystem</h2>
+				<p class="section-subtitle" data-i18n="ecosystem.subtitle">Modular components for every use case</p>
 
 				<div class="ecosystem-grid">
 					<div class="ecosystem-card">
-						<h4>cortex-mem-core</h4>
-						<p>Core library with memory operations</p>
+						<h4 data-i18n="ecosystem.coreTitle">cortex-mem-core</h4>
+						<p data-i18n="ecosystem.coreDesc">Core library with memory operations</p>
 					</div>
 					<div class="ecosystem-card">
-						<h4>cortex-mem-service</h4>
-						<p>REST API server (Axum-based)</p>
+						<h4 data-i18n="ecosystem.serviceTitle">cortex-mem-service</h4>
+						<p data-i18n="ecosystem.serviceDesc">REST API server (Axum-based)</p>
 					</div>
 					<div class="ecosystem-card">
-						<h4>cortex-mem-cli</h4>
-						<p>Command-line interface tool</p>
+						<h4 data-i18n="ecosystem.cliTitle">cortex-mem-cli</h4>
+						<p data-i18n="ecosystem.cliDesc">Command-line interface tool</p>
 					</div>
 					<div class="ecosystem-card">
-						<h4>cortex-mem-insights</h4>
-						<p>Web dashboard (Svelte 5)</p>
+						<h4 data-i18n="ecosystem.insightsTitle">cortex-mem-insights</h4>
+						<p data-i18n="ecosystem.insightsDesc">Web dashboard (Svelte 5)</p>
 					</div>
 					<div class="ecosystem-card">
-						<h4>cortex-mem-mcp</h4>
-						<p>Model Context Protocol server</p>
+						<h4 data-i18n="ecosystem.mcpTitle">cortex-mem-mcp</h4>
+						<p data-i18n="ecosystem.mcpDesc">Model Context Protocol server</p>
 					</div>
 					<div class="ecosystem-card">
-						<h4>cortex-mem-rig</h4>
-						<p>Rig framework adapter</p>
+						<h4 data-i18n="ecosystem.rigTitle">cortex-mem-rig</h4>
+						<p data-i18n="ecosystem.rigDesc">Rig framework adapter</p>
 					</div>
 				</div>
 
 				<div class="integrations">
-					<h3 style="margin-bottom: 24px; color: var(--text-secondary)">Works with</h3>
+					<h3 style="margin-bottom: 24px; color: var(--text-secondary)" data-i18n="ecosystem.worksWith">Works with</h3>
 					<div class="integration-badges">
-						<div class="integration-badge">Rig</div>
-						<div class="integration-badge">TARS</div>
-						<div class="integration-badge">Cursor</div>
-						<div class="integration-badge">GitHub Copilot</div>
-						<div class="integration-badge">LangChain</div>
+						<div class="integration-badge" data-i18n="ecosystem.rig">Rig</div>
+						<div class="integration-badge" data-i18n="ecosystem.tars">TARS</div>
+						<div class="integration-badge" data-i18n="ecosystem.cursor">Cursor</div>
+						<div class="integration-badge" data-i18n="ecosystem.githubCopilot">GitHub Copilot</div>
+						<div class="integration-badge" data-i18n="ecosystem.langChain">LangChain</div>
 					</div>
 				</div>
 			</div>
@@ -1594,8 +1697,8 @@ curl -fsSL https://cortex-mem.io/install.sh | sh</pre>
 			<div class="container">
 				<div class="footer-grid">
 					<div class="footer-section">
-						<h4>🧠 Cortex Memory</h4>
-						<p>
+						<h4 data-i18n="footer.title">🧠 Cortex Memory</h4>
+						<p data-i18n="footer.description">
 							The AI-native memory framework built with Rust. Transform your stateless
 							AI into an intelligent, context-aware partner.
 						</p>
@@ -1605,46 +1708,664 @@ curl -fsSL https://cortex-mem.io/install.sh | sh</pre>
 								class="btn btn-secondary"
 								style="display: inline-flex"
 							>
-								<i class="fab fa-github"></i> Star on GitHub
+								<i class="fab fa-github"></i> <span data-i18n="footer.starOnGithub">Star on GitHub</span>
 							</a>
 						</p>
 					</div>
 
 					<div class="footer-section">
-						<h4>Resources</h4>
+						<h4 data-i18n="footer.resourcesTitle">Resources</h4>
 						<div class="footer-links">
 							<a href="https://github.com/sopaco/cortex-mem/tree/main/litho.docs"
-								>Documentation</a
+								data-i18n="footer.documentation">Documentation</a
 							>
-							<a href="https://github.com/sopaco/cortex-mem">GitHub Repository</a>
+							<a href="https://github.com/sopaco/cortex-mem" data-i18n="footer.githubRepo">GitHub Repository</a>
 							<a
 								href="https://raw.githubusercontent.com/sopaco/cortex-mem/refs/heads/main/assets/benchmark/cortex_mem_vs_langmem.png"
-								>Benchmark Report</a
+								data-i18n="footer.benchmarkReport">Benchmark Report</a
 							>
-							<a href="https://github.com/sopaco/cortex-mem/releases">Changelog</a>
+							<a href="https://github.com/sopaco/cortex-mem/releases" data-i18n="footer.changelog">Changelog</a>
 						</div>
 					</div>
 
 					<div class="footer-section">
-						<h4>Community</h4>
+						<h4 data-i18n="footer.communityTitle">Community</h4>
 						<div class="footer-links">
 							<a href="https://github.com/sopaco/cortex-mem/discussions"
-								>GitHub Discussions</a
+								data-i18n="footer.githubDiscussions">GitHub Discussions</a
 							>
-							<a href="#">Discord Community</a>
-							<a href="#">Twitter</a>
-							<a href="#">Blog</a>
+							<a href="#" data-i18n="footer.discord">Discord Community</a>
+							<a href="#" data-i18n="footer.twitter">Twitter</a>
+							<a href="#" data-i18n="footer.blog">Blog</a>
 						</div>
 					</div>
 				</div>
 
 				<div class="footer-bottom">
-					© 2026 Cortex Memory. Licensed under MIT. Built with ❤️ and Rust 🦀
+					<span data-i18n="footer.copyright">© 2026 Cortex Memory. Licensed under MIT. Built with ❤️ and Rust 🦀</span>
 				</div>
 			</div>
 		</footer>
 
 		<script>
+			// Internationalization
+			const i18n = {
+				en: {
+					nav: {
+						logo: 'Cortex Memory',
+						docs: 'Documentation',
+						benchmark: 'Benchmark',
+						getStarted: 'Get Started →'
+					},
+					hero: {
+						title: 'The AI-native <span class="gradient-text">Memory Framework</span><br />for Building Intelligent Agents',
+						subtitle: 'Built with Rust. Blazingly Fast. Production Ready.',
+						getStarted: 'Get Started',
+						viewOnGithub: 'View on GitHub',
+						benchmark: '3x Faster',
+						benchmarkThan: 'than LangMem',
+						viewBenchmark: 'View Benchmark →',
+						rustPowered: 'Rust Powered',
+						highPerformance: 'High Performance',
+						multiTenant: 'Multi-Tenant',
+						easyDeploy: 'Easy Deploy'
+					},
+					why: {
+						title: 'Why Cortex Memory?',
+						subtitle: 'Built for production, powered by Rust',
+						card1Title: 'Built with Rust',
+						card1Desc: "Zero-cost abstractions, fearless concurrency, and guaranteed memory safety. Cortex Memory leverages Rust's type system to deliver production-grade performance without sacrificing developer experience.",
+						card1Feature1: '3x faster indexing',
+						card1Feature2: '100% memory safe',
+						card1Feature3: 'Single binary deployment',
+						card2Title: 'Production Ready',
+						card2Desc: 'Enterprise-grade multi-tenancy with strict data isolation. Deploy once, serve thousands of users with tenant-scoped collections and filesystem partitioning.',
+						card2Feature1: 'SaaS-ready isolation',
+						card2Feature2: 'Built-in security',
+						card2Feature3: 'Per-tenant analytics',
+						card3Title: 'Easy Integration',
+						card3Desc: 'Integrate via REST API, CLI, MCP protocol, or native Rust library. From chatbots to enterprise systems—Cortex Memory adapts to your stack.',
+						card3Feature1: 'REST API',
+						card3Feature2: 'MCP protocol',
+						card3Feature3: 'Native Rust library'
+					},
+					philosophy: {
+						title: 'Design Philosophy',
+						subtitle: 'Principles for building scalable, long-running AI agents',
+						card1Title: '🗂️ Context Organization as a File System',
+						card1Desc: 'Everything is stored as files. Resources, users, sessions, and memories are organized in a hierarchical filesystem structure using the <code>cortex://</code> URI scheme—making context portable, versionable, and compatible with Git.',
+						fileSystemTree: `cortex:// File System
+│
+├─ <span class="folder">📁 resources/</span>
+│  ├─ <span class="file">📄 api_docs.md</span>
+│  └─ <span class="file">📄 best_practices.md</span>
+│
+├─ <span class="folder">📁 user/</span>
+│  └─ <span class="folder">📁 user_001/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 agent/</span>
+│  └─ <span class="folder">📁 assistant_v2/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 session/</span>
+│  └─ <span class="folder">📁 sess_20260219/</span>
+│     ├─ <span class="file">📄 timeline.md</span>
+│     ├─ <span class="file">📄 L1_overview.md</span>
+│     └─ <span class="file">📄 L0_abstract.md</span>
+│
+└─ <span class="folder">📁 memories/</span>
+   ├─ <span class="file">📄 preferences.json</span>
+   └─ <span class="file">📄 decisions.json</span>`,
+						card2Title: '📚 Layered Context Loading',
+						card2Desc: 'Progressive context disclosure through a three-tier hierarchy. Load only what\'s needed—from high-level abstracts (L0) to detailed transcripts (L2)—optimizing LLM token usage while maintaining rich context.',
+						agentInitiate: 'Agent initiate operation',
+						l0Title: 'L0 Abstract',
+						l0Desc: 'Tokens < 100 • High-level intent summary',
+						l1Title: 'L1 Overview',
+						l1Desc: 'Tokens < 2k • Structured markdown summary',
+						l2Title: 'L2 Detail',
+						l2Desc: 'Uncertain Token • Full conversation transcript',
+						card3Title: '🔄 Recursive Context Retrieval',
+						card3Desc: 'Intelligent context discovery using hierarchical retrieval. Start with directory-level positioning, perform local vector search, and rerank results—ensuring relevant memories surface even in large knowledge bases.',
+						intent: 'Intent',
+						hierarchicalRetriever: 'Hierarchical Retriever',
+						directoryPosition: 'Directory Position',
+						localSearch: 'Local Search',
+						rerank: 'Rerank',
+						context: 'Context',
+						card4Title: '♾️ Observable and Self-Evolving Context',
+						card4Desc: 'Memory evolves through continuous agent-context interaction. Every session commit triggers automated extraction, profiling, and indexing—building a knowledge base that grows smarter over time without manual intervention.',
+						nodeAgent: 'Agent',
+						nodeMemory: 'Cortex Memory',
+						contextSupply: 'Context Supply',
+						sessionCommit: 'Session Commit'
+					},
+					performance: {
+						title: 'Performance That Matters',
+						subtitle: 'Built with Rust for production workloads',
+						viewBenchmark: 'View benchmark results',
+						indexingSpeed: 'Faster Indexing Speed',
+						memoryFootprint: 'Less Memory Footprint',
+						binaryDeploy: 'Single Binary Deploy',
+						benchmarkComparison: 'Benchmark Comparison',
+						indexingSpeedLabel: 'Indexing Speed (messages/sec)',
+						cortexMemory: 'Cortex Memory',
+						langMem: 'LangMem',
+						memoryUsageLabel: 'Memory Usage (MB for 10k sessions)'
+					},
+					architecture: {
+						title: 'Architecture Overview',
+						subtitle: 'Modular, scalable, and production-ready',
+						accessLayer: 'Access Layer',
+						cli: 'CLI',
+						restApi: 'REST API',
+						mcpProtocol: 'MCP Protocol',
+						webUi: 'Web UI',
+						coreLayer: 'Core Business Layer',
+						sessionManagement: 'Session Management',
+						layerManagement: 'Layer Management (L0/L1/L2)',
+						searchEngine: 'Search Engine',
+						extractionEngine: 'Extraction Engine',
+						automation: 'Automation (File Watcher, Auto Index)',
+						infrastructureLayer: 'Infrastructure Layer',
+						qdrant: 'Qdrant Vector DB',
+						filesystemStorage: 'Filesystem Storage',
+						llmApi: 'LLM API',
+						embeddingApi: 'Embedding API',
+						feature1: 'Multi-tenant isolation via collection suffixing',
+						feature2: 'Event-driven automation with Tokio',
+						feature3: 'Hybrid storage: Filesystem + Vector DB',
+						feature4: 'Three-tier memory hierarchy (L0/L1/L2)'
+					},
+					quickstart: {
+						title: 'Get Started in Seconds',
+						installTitle: '1. Install',
+						installDesc: 'Get started with a single command',
+						cargoComment: '# Via Cargo',
+						binaryComment: '# Or download pre-built binary',
+						startTitle: '2. Start Using',
+						startDesc: 'Minimal API surface for context operations',
+						initializeComment: '// Initialize memory system',
+						semanticComment: '// Semantic search',
+						accessComment: '// Access via cortex:// URIs',
+						rustLibrary: 'Rust Library',
+						restApi: 'REST API',
+						mcpProtocol: 'MCP Protocol',
+						cliTool: 'CLI Tool'
+					},
+					ecosystem: {
+						title: 'The Cortex Memory Ecosystem',
+						subtitle: 'Modular components for every use case',
+						coreTitle: 'cortex-mem-core',
+						coreDesc: 'Core library with memory operations',
+						serviceTitle: 'cortex-mem-service',
+						serviceDesc: 'REST API server (Axum-based)',
+						cliTitle: 'cortex-mem-cli',
+						cliDesc: 'Command-line interface tool',
+						insightsTitle: 'cortex-mem-insights',
+						insightsDesc: 'Web dashboard (Svelte 5)',
+						mcpTitle: 'cortex-mem-mcp',
+						mcpDesc: 'Model Context Protocol server',
+						rigTitle: 'cortex-mem-rig',
+						rigDesc: 'Rig framework adapter',
+						worksWith: 'Works with',
+						rig: 'Rig',
+						tars: 'TARS',
+						cursor: 'Cursor',
+						githubCopilot: 'GitHub Copilot',
+						langChain: 'LangChain'
+					},
+					footer: {
+						title: '🧠 Cortex Memory',
+						description: 'The AI-native memory framework built with Rust. Transform your stateless AI into an intelligent, context-aware partner.',
+						starOnGithub: 'Star on GitHub',
+						resourcesTitle: 'Resources',
+						documentation: 'Documentation',
+						githubRepo: 'GitHub Repository',
+						benchmarkReport: 'Benchmark Report',
+						changelog: 'Changelog',
+						communityTitle: 'Community',
+						githubDiscussions: 'GitHub Discussions',
+						discord: 'Discord Community',
+						twitter: 'Twitter',
+						blog: 'Blog',
+						copyright: '© 2026 Cortex Memory. Licensed under MIT. Built with ❤️ and Rust 🦀'
+					}
+				},
+				zh: {
+					nav: {
+						logo: 'Cortex Memory',
+						docs: '文档',
+						benchmark: '基准测试',
+						getStarted: '开始使用 →'
+					},
+					hero: {
+						title: '为构建智能代理而生的<span class="gradient-text">AI 原生存储框架</span>',
+						subtitle: 'Rust 构建。极速运行。生产就绪。',
+						getStarted: '开始使用',
+						viewOnGithub: '在 GitHub 上查看',
+						benchmark: '速度快 3 倍',
+						benchmarkThan: '比 LangMem',
+						viewBenchmark: '查看基准测试 →',
+						rustPowered: 'Rust 驱动',
+						highPerformance: '高性能',
+						multiTenant: '多租户',
+						easyDeploy: '易于部署'
+					},
+					why: {
+						title: '为什么选择 Cortex Memory？',
+						subtitle: '生产就绪，Rust 提供动力',
+						card1Title: 'Rust 构建',
+						card1Desc: '零成本抽象，无畏并发，保证内存安全。Cortex Memory 利用 Rust 的类型系统提供生产级性能，同时不牺牲开发体验。',
+						card1Feature1: '索引速度快 3 倍',
+						card1Feature2: '100% 内存安全',
+						card1Feature3: '单个二进制部署',
+						card2Title: '生产就绪',
+						card2Desc: '企业级多租户，具有严格的数据隔离。一次部署，通过租户范围集合和文件系统分区为数千用户服务。',
+						card2Feature1: 'SaaS 就绪隔离',
+						card2Feature2: '内置安全性',
+						card2Feature3: '每个租户分析',
+						card3Title: '轻松集成',
+						card3Desc: '通过 REST API、CLI、MCP 协议或原生 Rust 库集成。从聊天机器人到企业系统—Cortex Memory 适应您的技术栈。',
+						card3Feature1: 'REST API',
+						card3Feature2: 'MCP 协议',
+						card3Feature3: '原生 Rust 库'
+					},
+					philosophy: {
+						title: '设计哲学',
+						subtitle: '构建可扩展、长时间运行的AI代理的原则',
+						card1Title: '🗂️ 文件系统式的上下文组织',
+						card1Desc: '所有内容都以文件形式存储。资源、用户、会话和记忆使用<code>cortex://</code> URI方案组织在层次化文件系统结构中——使上下文可移植、可版本控制，并与Git兼容。',
+						fileSystemTree: `cortex:// 文件系统
+│
+├─ <span class="folder">📁 resources/</span>
+│  ├─ <span class="file">📄 api_docs.md</span>
+│  └─ <span class="file">📄 best_practices.md</span>
+│
+├─ <span class="folder">📁 user/</span>
+│  └─ <span class="folder">📁 user_001/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 agent/</span>
+│  └─ <span class="folder">📁 assistant_v2/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 session/</span>
+│  └─ <span class="folder">📁 sess_20260219/</span>
+│     ├─ <span class="file">📄 timeline.md</span>
+│     ├─ <span class="file">📄 L1_overview.md</span>
+│     └─ <span class="file">📄 L0_abstract.md</span>
+│
+└─ <span class="folder">📁 memories/</span>
+   ├─ <span class="file">📄 preferences.json</span>
+   └─ <span class="file">📄 decisions.json</span>`,
+						card2Title: '📚 分层上下文加载',
+						card2Desc: '通过三层层次结构进行渐进式上下文披露。只加载需要的内容——从高级抽象（L0）到详细记录（L2）——优化LLM令牌使用同时保持丰富上下文。',
+						agentInitiate: '代理启动操作',
+						l0Title: 'L0 抽象',
+						l0Desc: '令牌 < 100 • 高级意图摘要',
+						l1Title: 'L1 概述',
+						l1Desc: '令牌 < 2k • 结构化markdown摘要',
+						l2Title: 'L2 详情',
+						l2Desc: '不限定令牌 • 完整对话记录',
+						card3Title: '🔄 递归上下文检索',
+						card3Desc: '使用分层检索进行智能上下文发现。从目录级定位开始，执行本地向量搜索，并重新排序结果——确保相关记忆在大型知识库中也能浮现。',
+						intent: '意图',
+						hierarchicalRetriever: '分层检索器',
+						directoryPosition: '目录定位',
+						localSearch: '本地搜索',
+						rerank: '重新排序',
+						context: '上下文',
+						card4Title: '♾️ 可观察和自我演进的上下文',
+						card4Desc: '记忆通过持续的代理-上下文交互演进。每次会话提交都会触发自动提取、分析和索引——构建一个随时间推移变得更智能的知识库，无需手动干预。',
+						nodeAgent: '代理',
+						nodeMemory: 'Cortex Memory',
+						contextSupply: '上下文供给',
+						sessionCommit: '会话提交'
+					},
+					performance: {
+						title: '重要性能',
+						subtitle: '为生产工作负载而用Rust构建',
+						viewBenchmark: '查看基准测试结果',
+						indexingSpeed: '更快的索引速度',
+						memoryFootprint: '更少的内存占用',
+						binaryDeploy: '单一二进制部署',
+						benchmarkComparison: '基准测试比较',
+						indexingSpeedLabel: '索引速度（消息/秒）',
+						cortexMemory: 'Cortex Memory',
+						langMem: 'LangMem',
+						memoryUsageLabel: '内存使用量（10k会话的MB）'
+					},
+					architecture: {
+						title: '架构概述',
+						subtitle: '模块化、可扩展且生产就绪',
+						accessLayer: '访问层',
+						cli: 'CLI',
+						restApi: 'REST API',
+						mcpProtocol: 'MCP 协议',
+						webUi: 'Web UI',
+						coreLayer: '核心业务层',
+						sessionManagement: '会话管理',
+						layerManagement: '层级管理（L0/L1/L2）',
+						searchEngine: '搜索引擎',
+						extractionEngine: '提取引擎',
+						automation: '自动化（文件监视器、自动索引）',
+						infrastructureLayer: '基础设施层',
+						qdrant: 'Qdrant 向量数据库',
+						filesystemStorage: '文件系统存储',
+						llmApi: 'LLM API',
+						embeddingApi: '嵌入API',
+						feature1: '通过集合后缀实现多租户隔离',
+						feature2: '使用Tokio的事件驱动自动化',
+						feature3: '混合存储：文件系统 + 向量数据库',
+						feature4: '三层内存层次结构（L0/L1/L2）'
+					},
+					quickstart: {
+						title: '几秒钟内开始',
+						installTitle: '1. 安装',
+						installDesc: '使用单个命令开始',
+						cargoComment: '# 通过Cargo',
+						binaryComment: '# 或下载预构建二进制文件',
+						startTitle: '2. 开始使用',
+						startDesc: '用于上下文操作的最小API',
+						initializeComment: '// 初始化内存系统',
+						semanticComment: '// 语义搜索',
+						accessComment: '// 通过cortex:// URI访问',
+						rustLibrary: 'Rust 库',
+						restApi: 'REST API',
+						mcpProtocol: 'MCP 协议',
+						cliTool: 'CLI 工具'
+					},
+					ecosystem: {
+						title: 'Cortex Memory 生态系统',
+						subtitle: '适用于各种用例的模块化组件',
+						coreTitle: 'cortex-mem-core',
+						coreDesc: '具有内存操作的核心库',
+						serviceTitle: 'cortex-mem-service',
+						serviceDesc: 'REST API服务器（基于Axum）',
+						cliTitle: 'cortex-mem-cli',
+						cliDesc: '命令行界面工具',
+						insightsTitle: 'cortex-mem-insights',
+						insightsDesc: 'Web仪表板（Svelte 5）',
+						mcpTitle: 'cortex-mem-mcp',
+						mcpDesc: '模型上下文协议服务器',
+						rigTitle: 'cortex-mem-rig',
+						rigDesc: 'Rig框架适配器',
+						worksWith: '兼容',
+						rig: 'Rig',
+						tars: 'TARS',
+						cursor: 'Cursor',
+						githubCopilot: 'GitHub Copilot',
+						langChain: 'LangChain'
+					},
+					footer: {
+						title: '🧠 Cortex Memory',
+						description: '用Rust构建的AI原生内存框架。将无状态的AI转换为智能的、上下文感知的伙伴。',
+						starOnGithub: '在GitHub上标星',
+						resourcesTitle: '资源',
+						documentation: '文档',
+						githubRepo: 'GitHub仓库',
+						benchmarkReport: '基准测试报告',
+						changelog: '更新日志',
+						communityTitle: '社区',
+						githubDiscussions: 'GitHub讨论',
+						discord: 'Discord社区',
+						twitter: 'Twitter',
+						blog: '博客',
+						copyright: '© 2026 Cortex Memory. MIT许可。用❤️和Rust 🦀构建'
+					}
+				},
+				ja: {
+					nav: {
+						logo: 'Cortex Memory',
+						docs: 'ドキュメント',
+						benchmark: 'ベンチマーク',
+						getStarted: '始める →'
+					},
+					hero: {
+						title: 'インテリジェントエージェント構築のための<span class="gradient-text">AI ネイティブメモリフレームワーク</span>',
+						subtitle: 'Rust で構築。高速。本番環境対応。',
+						getStarted: '始める',
+						viewOnGithub: 'GitHub で見る',
+						benchmark: '3倍高速',
+						benchmarkThan: 'LangMem より',
+						viewBenchmark: 'ベンチマークを見る →',
+						rustPowered: 'Rust 駆動',
+						highPerformance: '高性能',
+						multiTenant: 'マルチテナント',
+						easyDeploy: '簡単デプロイ'
+					},
+					why: {
+						title: 'なぜ Cortex Memory を選ぶのか？',
+						subtitle: 'プロダクション対応、Rust による駆動',
+						card1Title: 'Rust で構築',
+						card1Desc: 'ゼロコスト抽象化、恐れのない並列性、保証されたメモリ安全性。Cortex Memory は Rust の型システムを活用し、開発者体験を損なうことなくプロダクショングレードのパフォーマンスを提供します。',
+						card1Feature1: 'インデックス速度 3倍',
+						card1Feature2: '100% メモリセーフ',
+						card1Feature3: '単一バイナリデプロイ',
+						card2Title: 'プロダクション対応',
+						card2Desc: '厳格なデータ分離を持つエンタープライズ級マルチテナント。一度デプロイするだけで、テナントスコープコレクションとファイルシステムパーティショニングで何千ものユーザーにサービスを提供。',
+						card2Feature1: 'SaaS 対応分離',
+						card2Feature2: '内蔵セキュリティ',
+						card2Feature3: 'テナントごとの分析',
+						card3Title: '簡単な統合',
+						card3Desc: 'REST API、CLI、MCP プロトコル、またはネイティブ Rust ライブラリで統合。チャットボットからエンタープライズシステムまで—Cortex Memory はお使いのスタックに適応します。',
+						card3Feature1: 'REST API',
+						card3Feature2: 'MCP プロトコル',
+						card3Feature3: 'ネイティブ Rust ライブラリ'
+					},
+					philosophy: {
+						title: '設計哲学',
+						subtitle: 'スケーラブルな長時間実行AIエージェントを構築するための原則',
+						card1Title: '🗂️ ファイルシステムとしてのコンテキスト組織',
+						card1Desc: 'すべてがファイルとして保存されます。リソース、ユーザー、セッション、メモリは<code>cortex://</code> URIスキームを使用した階層ファイルシステム構造で整理されており、コンテキストをポータブルでバージョン管理可能、Gitと互換性を持たせます。',
+						fileSystemTree: `cortex:// ファイルシステム
+│
+├─ <span class="folder">📁 resources/</span>
+│  ├─ <span class="file">📄 api_docs.md</span>
+│  └─ <span class="file">📄 best_practices.md</span>
+│
+├─ <span class="folder">📁 user/</span>
+│  └─ <span class="folder">📁 user_001/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 agent/</span>
+│  └─ <span class="folder">📁 assistant_v2/</span>
+│     └─ <span class="file">📄 profile.json</span>
+│
+├─ <span class="folder">📁 session/</span>
+│  └─ <span class="folder">📁 sess_20260219/</span>
+│     ├─ <span class="file">📄 timeline.md</span>
+│     ├─ <span class="file">📄 L1_overview.md</span>
+│     └─ <span class="file">📄 L0_abstract.md</span>
+│
+└─ <span class="folder">📁 memories/</span>
+   ├─ <span class="file">📄 preferences.json</span>
+   └─ <span class="file">📄 decisions.json</span>`,
+						card2Title: '📚 階層的コンテキスト読み込み',
+						card2Desc: '3階層階層による漸進的コンテキスト開示。高レベルの抽象（L0）から詳細なトランスクリプト（L2）まで、必要なもののみを読み込み—LLMトークン使用量を最適化しながら豊富なコンテキストを維持します。',
+						agentInitiate: 'エージェント操作開始',
+						l0Title: 'L0 抽象',
+						l0Desc: 'トークン < 100 • 高レベルの意図サマリー',
+						l1Title: 'L1 概要',
+						l1Desc: 'トークン < 2k • 構造化マークダウンサマリー',
+						l2Title: 'L2 詳細',
+						l2Desc: '不確定トークン • 完全な会話トランスクリプト',
+						card3Title: '🔄 再帰的コンテキスト検索',
+						card3Desc: '階層的検索を使用したインテリジェントなコンテキスト発見。ディレクトリレベルのポジショニングから開始し、ローカルベクトル検索を実行し、結果を再ランク付け—大規模なナレッジベースでも関連するメモリが表面化するようにします。',
+						intent: '意図',
+						hierarchicalRetriever: '階層的検索',
+						directoryPosition: 'ディレクトリポジショニング',
+						localSearch: 'ローカル検索',
+						rerank: '再ランク付け',
+						context: 'コンテキスト',
+						card4Title: '♾️ 観測可能で自己進化するコンテキスト',
+						card4Desc: 'メモリは継続的なエージェント-コンテキスト相互作用を通じて進化します。各セッションコミットが自動抽出、プロファイリング、インデックス作成をトリガー—手動介入なしで時間とともにスマートになるナレッジベースを構築します。',
+						nodeAgent: 'エージェント',
+						nodeMemory: 'Cortex Memory',
+						contextSupply: 'コンテキスト供給',
+						sessionCommit: 'セッションコミット'
+					},
+					performance: {
+						title: '重要なパフォーマンス',
+						subtitle: 'プロダクションワークロード用にRustで構築',
+						viewBenchmark: 'ベンチマーク結果を見る',
+						indexingSpeed: '高速なインデックス速度',
+						memoryFootprint: '少ないメモリ使用量',
+						binaryDeploy: '単一バイナリデプロイ',
+						benchmarkComparison: 'ベンチマーク比較',
+						indexingSpeedLabel: 'インデックス速度（メッセージ/秒）',
+						cortexMemory: 'Cortex Memory',
+						langMem: 'LangMem',
+						memoryUsageLabel: 'メモリ使用量（10kセッションのMB）'
+					},
+					architecture: {
+						title: 'アーキテクチャ概要',
+						subtitle: 'モジュラー、スケーラブル、プロダクション対応',
+						accessLayer: 'アクセス層',
+						cli: 'CLI',
+						restApi: 'REST API',
+						mcpProtocol: 'MCP プロトコル',
+						webUi: 'Web UI',
+						coreLayer: 'コアビジネス層',
+						sessionManagement: 'セッション管理',
+						layerManagement: 'レイヤー管理（L0/L1/L2）',
+						searchEngine: '検索エンジン',
+						extractionEngine: '抽出エンジン',
+						automation: '自動化（ファイル監視、自動インデックス）',
+						infrastructureLayer: 'インフラストラクチャ層',
+						qdrant: 'Qdrant ベクターDB',
+						filesystemStorage: 'ファイルシステムストレージ',
+						llmApi: 'LLM API',
+						embeddingApi: '埋め込みAPI',
+						feature1: 'コレクションサフィックスによるマルチテナント分離',
+						feature2: 'Tokioによるイベント駆動自動化',
+						feature3: 'ハイブリッドストレージ：ファイルシステム + ベクターDB',
+						feature4: '3階層メモリ階層（L0/L1/L2）'
+					},
+					quickstart: {
+						title: '数秒で始めましょう',
+						installTitle: '1. インストール',
+						installDesc: '単一コマンドで始めましょう',
+						cargoComment: '# Cargo経由',
+						binaryComment: '# またはビルド済みバイナリをダウンロード',
+						startTitle: '2. 使用開始',
+						startDesc: 'コンテキスト操作のための最小限のAPI',
+						initializeComment: '// メモリシステムを初期化',
+						semanticComment: '// セマンティック検索',
+						accessComment: '// cortex:// URI経由でアクセス',
+						rustLibrary: 'Rust ライブラリ',
+						restApi: 'REST API',
+						mcpProtocol: 'MCP プロトコル',
+						cliTool: 'CLI ツール'
+					},
+					ecosystem: {
+						title: 'Cortex Memory エコシステム',
+						subtitle: 'すべてのユースケース向けのモジュラーコンポーネント',
+						coreTitle: 'cortex-mem-core',
+						coreDesc: 'メモリ操作付きのコアライブラリ',
+						serviceTitle: 'cortex-mem-service',
+						serviceDesc: 'REST APIサーバー（Axumベース）',
+						cliTitle: 'cortex-mem-cli',
+						cliDesc: 'コマンドラインインターフェースツール',
+						insightsTitle: 'cortex-mem-insights',
+						insightsDesc: 'Webダッシュボード（Svelte 5）',
+						mcpTitle: 'cortex-mem-mcp',
+						mcpDesc: 'モデルコンテキストプロトコルサーバー',
+						rigTitle: 'cortex-mem-rig',
+						rigDesc: 'Rigフレームワークアダプター',
+						worksWith: '連携先',
+						rig: 'Rig',
+						tars: 'TARS',
+						cursor: 'Cursor',
+						githubCopilot: 'GitHub Copilot',
+						langChain: 'LangChain'
+					},
+					footer: {
+						title: '🧠 Cortex Memory',
+						description: 'Rustで構築されたAIネイティブメモリフレームワーク。ステートレスなAIをインテリジェントでコンテキスト認識パートナーに変えます。',
+						starOnGithub: 'GitHubでスター',
+						resourcesTitle: 'リソース',
+						documentation: 'ドキュメント',
+						githubRepo: 'GitHubリポジトリ',
+						benchmarkReport: 'ベンチマークレポート',
+						changelog: '変更履歴',
+						communityTitle: 'コミュニティ',
+						githubDiscussions: 'GitHub ディスカッション',
+						discord: 'Discord コミュニティ',
+						twitter: 'Twitter',
+						blog: 'ブログ',
+						copyright: '© 2026 Cortex Memory. ライセンス MIT. ❤️とRust 🦀で構築'
+					}
+				}
+			};
+
+			// Get browser language
+			function getBrowserLanguage() {
+				const browserLang = navigator.language || navigator.userLanguage;
+				if (browserLang.startsWith('zh')) return 'zh';
+				if (browserLang.startsWith('ja')) return 'ja';
+				return 'en'; // Default to English
+			}
+
+			// Get saved language preference
+			function getSavedLanguage() {
+				return localStorage.getItem('cortex-mem-lang') || getBrowserLanguage();
+			}
+
+			// Update page content based on language
+			function updateLanguage(lang) {
+				// Update body class for font adjustments
+				document.body.className = document.body.className.replace(/\b(zh|ja|en)\b/g, '');
+				document.body.classList.add(lang);
+
+				// Update all elements with data-i18n attribute
+				const elements = document.querySelectorAll('[data-i18n]');
+				elements.forEach((element) => {
+					const keys = element.getAttribute('data-i18n').split('.');
+					let value = i18n[lang];
+
+					// Navigate through the nested object
+					for (const key of keys) {
+						if (value && typeof value === 'object') {
+							value = value[key];
+						} else {
+							value = null;
+							break;
+						}
+					}
+
+					// Update element content if translation exists
+					if (value) {
+						element.innerHTML = value;
+					}
+				});
+
+				// Update language selector
+				const selector = document.getElementById('language-select');
+				if (selector && selector.value !== lang) {
+					selector.value = lang;
+				}
+
+				// Save language preference
+				localStorage.setItem('cortex-mem-lang', lang);
+			}
+
+			// Initialize language
+			function initLanguage() {
+				const savedLang = getSavedLanguage();
+				updateLanguage(savedLang);
+
+				// Add event listener for language selector
+				const selector = document.getElementById('language-select');
+				if (selector) {
+					selector.addEventListener('change', () => {
+						updateLanguage(selector.value);
+					});
+				}
+			}
+
 			// Particle background animation
 			const particlesContainer = document.getElementById('particles-container');
 			const particleCount = 50;
@@ -1720,6 +2441,9 @@ curl -fsSL https://cortex-mem.io/install.sh | sh</pre>
 			if (benchmarkChart) {
 				chartObserver.observe(benchmarkChart);
 			}
+
+			// Initialize language when page loads
+			document.addEventListener('DOMContentLoaded', initLanguage);
 		</script>
 	</body>
 </html>
